@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, MoreHorizontal, UserEdit, Trash2, ShieldCheck, Mail, Sparkles, TrendingUp, Brain } from "lucide-react";
+import { Search, Plus, MoreHorizontal, Trash2, ShieldCheck, Mail, Sparkles, TrendingUp, Brain } from "lucide-react";
 import { useState, useRef } from "react";
 import * as XLSX from "xlsx";
 import { employees, Employee } from "./data";
