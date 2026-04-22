@@ -1,0 +1,5 @@
+firstName,lastName,email,role,department
+Alice,Cyber,alice.cyber@example.com,Security Engineer,Engineering
+Bob,Build,bob.build@example.com,Backend Developer,Engineering
+Charlie,Design,charlie.design@example.com,UI Designer,Design
+Diana,Marketing,diana.marketing@example.com,Growth Hacker,Marketing
