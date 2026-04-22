@@ -129,7 +129,7 @@ export default function CareersPage() {
                         {depts.map(dept => (
                             <Button
                                 key={dept}
-                                variant={filterDept === dept ? "default" : "outline"}
+                                variant={filterDept === dept ? "primary" : "outline"}
                                 onClick={() => setFilterDept(dept)}
                                 className={`h-10 px-6 rounded-xl border-zinc-200 dark:border-zinc-800 text-[10px] font-black uppercase tracking-widest transition-all ${filterDept === dept ? 'bg-black dark:bg-white' : ''}`}
                             >
