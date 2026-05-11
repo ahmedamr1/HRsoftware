@@ -4,16 +4,20 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, Calendar, Settings, LogOut, Briefcase, CreditCard, BarChart3, ClipboardList, Network } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, Settings, LogOut, Briefcase, CreditCard, BarChart3, ClipboardList, Network, User, Heart } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
 
 const navigation = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["admin", "employee"] },
-    { name: "Employees", href: "/employees", icon: Users, roles: ["admin"] },
+    { name: "Profile", href: "/profile", icon: User, roles: ["admin", "employee"] },
+    { name: "Culture & Pulse", href: "/culture", icon: Heart, roles: ["admin", "employee"] },
+    { name: "Employees", href: "/employees", icon: Users, roles: ["admin", "employee"] },
     { name: "Time Off", href: "/time-off", icon: Calendar, roles: ["admin", "employee"] },
     { name: "Recruitment", href: "/recruitment", icon: Briefcase, roles: ["admin"] },
     { name: "Onboarding", href: "/onboarding", icon: ClipboardList, roles: ["admin", "employee"] },
+    { name: "Offboarding", href: "/offboarding", icon: LogOut, roles: ["admin", "employee"] },
+    { name: "Assets", href: "/assets", icon: Briefcase, roles: ["admin"] },
     { name: "Org Chart", href: "/org-chart", icon: Network, roles: ["admin"] },
     { name: "Payroll", href: "/payroll", icon: CreditCard, roles: ["admin", "employee"] },
     { name: "Performance", href: "/performance", icon: BarChart3, roles: ["admin", "employee"] },

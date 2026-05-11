@@ -1,22 +1,43 @@
 "use client"
 
 import { useState } from "react";
+import NextLink from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, MessageSquare, Target, ArrowUpRight, TrendingUp, Award, Sparkles, Brain, Zap, Activity } from "lucide-react";
 import { PerformanceModal } from "@/components/performance/PerformanceModal";
+import LaunchReviewCycleModal from "@/components/performance/LaunchReviewCycleModal";
+import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
+import { Calendar, Users, Shield } from "lucide-react";
 
 export default function PerformancePage() {
+    const { userRole } = useAuth();
+    const isAdmin = userRole === "admin";
     const [selectedReview, setSelectedReview] = useState<any>(null);
+    const [isLaunchModalOpen, setIsLaunchModalOpen] = useState(false);
 
-    const reviews = [
+    const activeCycle = {
+        name: "Q1 2024 360° Review",
+        start: "Apr 01, 2024",
+        end: "Apr 15, 2024",
+        assignees: 24,
+        managers: 5,
+        status: "Active"
+    };
+
+    const allReviews = [
         { id: "1", name: "Alex Rivera", role: "Frontend Dev", rating: 4.8, status: "Completed", date: "Jan 2024", aiSummary: "Exceptional architecture skills, potential for Tech Lead role." },
         { id: "2", name: "Samantha Lee", role: "Designer", rating: 4.9, status: "In Progress", date: "Feb 2024", aiSummary: "High visual fidelity, needs stronger documentation habits." },
         { id: "3", name: "Jordan Smith", role: "HR Manager", rating: 4.5, status: "Pending", date: "Feb 2024", aiSummary: "Strong people skills, focus on scaling recruitment workflows." },
+        { id: "4", name: "Ahmed Amr", role: "Product Manager", rating: 4.9, status: "Completed", date: "Jan 2024", aiSummary: "Visionary product leadership, excels in cross-functional coordination." },
     ];
+
+    const reviews = isAdmin 
+        ? allReviews 
+        : allReviews.filter(r => r.name === "Ahmed Amr");
 
     const handleAction = (msg: string) => {
         toast.info(msg);
@@ -37,17 +58,35 @@ export default function PerformancePage() {
                 employeeName={selectedReview?.name || ""}
                 role={selectedReview?.role || ""}
             />
+            <LaunchReviewCycleModal 
+                isOpen={isLaunchModalOpen}
+                onClose={() => setIsLaunchModalOpen(false)}
+            />
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Performance Intelligence</h2>
                     <p className="text-zinc-500 dark:text-zinc-400">AI-driven growth tracking and strategic talent alignment.</p>
                 </div>
                 <div className="flex gap-3">
+                    {isAdmin && (
+                        <Button 
+                            variant="outline" 
+                            className="border-blue-200 bg-blue-50/50 text-blue-600 rounded-full font-bold hover:bg-blue-100"
+                            onClick={() => setIsLaunchModalOpen(true)}
+                        >
+                            <Rocket size={14} className="mr-2" /> Launch New Cycle
+                        </Button>
+                    )}
+                    <NextLink href="/performance/360-review">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 rounded-full font-bold">
+                            <Sparkles size={14} className="mr-2" /> Launch 360° Workspace
+                        </Button>
+                    </NextLink>
                     <Button variant="outline" className="border-zinc-200 dark:border-zinc-800 rounded-full" onClick={() => toast.info("AI harmonizing company culture feedback...")}>
                         <Activity size={14} className="mr-2" /> Culture Audit
                     </Button>
                     <Button
-                        className="bg-zinc-950 dark:bg-zinc-50 text-white dark:text-black shadow-xl"
+                        className="bg-zinc-950 dark:bg-zinc-50 text-white dark:text-black shadow-xl rounded-full"
                         onClick={() => handleAction("AI drafting Q2 objectives based on current trajectory...")}
                     >
                         <Zap className="mr-2 h-4 w-4" /> AI Goal Generator

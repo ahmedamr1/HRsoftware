@@ -15,10 +15,51 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { timeOffRequests, TimeOffRequest } from "./data";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import * as XLSX from "xlsx";
+import { useAuth } from "@/lib/auth-context";
 
 export default function TimeOffPage() {
-    const [requests, setRequests] = useState<TimeOffRequest[]>(timeOffRequests);
+    const { userRole } = useAuth();
+    const isAdmin = userRole === "admin";
+    const [allRequests, setAllRequests] = useState<TimeOffRequest[]>(timeOffRequests);
+    const requests = isAdmin ? allRequests : allRequests.filter(r => r.user === "Ahmed Amr");
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (evt) => {
+            try {
+                const bstr = evt.target?.result;
+                const wb = XLSX.read(bstr, { type: "binary" });
+                const wsname = wb.SheetNames[0];
+                const ws = wb.Sheets[wsname];
+                const data = XLSX.utils.sheet_to_json(ws) as any[];
+
+                const response = await fetch('/api/time-off/bulk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to upload time off records.");
+                }
+
+                toast.success(`Successfully imported historical leave data.`);
+            } catch (error) {
+                console.error("Error parsing file:", error);
+                toast.error("Failed to parse file. Ensure it contains email, type, startDate, endDate, and days.");
+            }
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        };
+        reader.readAsBinaryString(file);
+    };
 
     const handleAction = (action: string, user: string) => {
         const isSuccess = action === 'Approve';
@@ -40,6 +81,16 @@ export default function TimeOffPage() {
                     <Button variant="outline" className="border-blue-500/20 text-blue-600 rounded-xl" onClick={() => toast.info("AI modeling team capacity for Q4...")}>
                         <Activity size={14} className="mr-2" /> Scarcity Map
                     </Button>
+                    <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        onChange={handleFileUpload} 
+                        accept=".xlsx, .xls, .csv" 
+                        className="hidden" 
+                    />
+                    <Button variant="outline" className="border-zinc-200 dark:border-zinc-800 rounded-xl" onClick={() => fileInputRef.current?.click()}>
+                        <Plus size={14} className="mr-2" /> Import Past Leaves
+                    </Button>
                     <Button
                         className="bg-zinc-950 dark:bg-zinc-50 text-white dark:text-black shadow-xl border-none"
                         asChild
@@ -53,11 +104,11 @@ export default function TimeOffPage() {
 
             <div className="grid gap-6 md:grid-cols-4">
                 {[
-                    { title: "Personal Balance", value: "12 Days", desc: "Available for you", icon: CalendarIcon, color: "blue" },
-                    { title: "Team Capacity", value: "92%", desc: "Optimal efficiency", icon: Activity, color: "emerald" },
-                    { title: "Scarcity Risk", value: "Low", desc: "Next 30 days", icon: Zap, color: "orange" },
-                    { title: "Auto-Approvals", value: "1", desc: "AI pre-vetted", icon: Sparkles, color: "blue" },
-                ].map((stat, i) => (
+                    { title: "Personal Balance", value: "12 Days", desc: "Available for you", icon: CalendarIcon, color: "blue", show: true },
+                    { title: "Team Capacity", value: "92%", desc: "Optimal efficiency", icon: Activity, color: "emerald", show: isAdmin },
+                    { title: "Scarcity Risk", value: "Low", desc: "Next 30 days", icon: Zap, color: "orange", show: isAdmin },
+                    { title: "Auto-Approvals", value: "1", desc: "AI pre-vetted", icon: Sparkles, color: "blue", show: isAdmin },
+                ].filter(s => s.show).map((stat, i) => (
                     <Card key={i} className="group overflow-hidden border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-[10px] font-black tracking-widest text-zinc-500 uppercase">{stat.title}</CardTitle>

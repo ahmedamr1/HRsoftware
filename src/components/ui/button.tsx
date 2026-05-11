@@ -1,12 +1,7 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// Note: I need to install class-variance-authority and @radix-ui/react-slot for this to work fully as ashadcn/ui
-// For now I will stick to a simpler version without those dependencies to avoid dependency hell if installs are failing, 
-// OR I will just install them. "Premium" usually implies these standard libraries.
-// Let's stick to a simpler version first that relies just on standard props to minimize dependency risk until I confirm installs work.
+// Note: Cleaned up unused/broken imports that were causing client-side exceptions.
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';

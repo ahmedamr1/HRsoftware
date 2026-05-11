@@ -8,6 +8,31 @@ export type Employee = {
     status: 'Active' | 'On Leave' | 'Terminated';
     avatar?: string;
     joinedDate: string;
+    dateOfBirth?: string;
+    gender?: string;
+    maritalStatus?: string;
+    phone?: string;
+    address?: string;
+    bankName?: string;
+    accountNumber?: string;
+    salary?: number;
+    emergencyContactName?: string;
+    emergencyContactRel?: string;
+    emergencyContactPhone?: string;
+    directManagerId?: string;
+    indirectManagerId?: string;
+    contractRenewalDate?: string;
+    nationality?: 'Saudi' | 'Egyptian' | 'Other';
+    isGosiApplicable?: boolean;
+    isTaxApplicable?: boolean;
+    currency?: 'SAR' | 'EGP' | 'USD';
+    personalEmail?: string;
+    housingAllowance?: number;
+    transportationAllowance?: number;
+    otherAllowance?: number;
+    laptopAllowance?: number;
+    overtime?: number;
+    bonus?: number;
 };
 
 export const employees: Employee[] = [
@@ -20,6 +45,15 @@ export const employees: Employee[] = [
         department: "Executive",
         status: "Active",
         joinedDate: "2020-01-15",
+        nationality: "Saudi",
+        isGosiApplicable: true,
+        isTaxApplicable: false,
+        currency: "SAR",
+        salary: 150000,
+        housingAllowance: 2500,
+        transportationAllowance: 1000,
+        otherAllowance: 500,
+        laptopAllowance: 200,
     },
     {
         id: "2",
@@ -30,6 +64,17 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2020-03-10",
+        nationality: "Egyptian",
+        isGosiApplicable: false,
+        isTaxApplicable: true,
+        currency: "USD",
+        salary: 9000,
+        housingAllowance: 0,
+        transportationAllowance: 0,
+        otherAllowance: 0,
+        laptopAllowance: 0,
+        overtime: 0,
+        bonus: 0,
     },
     {
         id: "3",
@@ -40,6 +85,11 @@ export const employees: Employee[] = [
         department: "HR",
         status: "Active",
         joinedDate: "2021-02-20",
+        nationality: "Egyptian",
+        currency: "EGP",
+        salary: 35000,
+        isGosiApplicable: false,
+        isTaxApplicable: true,
     },
     {
         id: "4",
@@ -50,6 +100,13 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2022-05-11",
+        nationality: "Egyptian",
+        isGosiApplicable: false,
+        isTaxApplicable: true,
+        currency: "USD",
+        salary: 22000,
+        housingAllowance: 5000,
+        transportationAllowance: 2000,
     },
     {
         id: "5",
@@ -60,6 +117,11 @@ export const employees: Employee[] = [
         department: "Product",
         status: "Active",
         joinedDate: "2021-11-05",
+        nationality: "Saudi",
+        currency: "SAR",
+        salary: 18000,
+        isGosiApplicable: true,
+        isTaxApplicable: false,
     },
     {
         id: "6",
@@ -70,6 +132,8 @@ export const employees: Employee[] = [
         department: "Design",
         status: "Active",
         joinedDate: "2022-01-08",
+        currency: "USD",
+        salary: 16000,
     },
     {
         id: "7",
@@ -80,6 +144,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2022-08-14",
+        currency: "USD",
+        salary: 17500,
     },
     {
         id: "8",
@@ -90,6 +156,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2023-01-22",
+        currency: "USD",
+        salary: 15500,
     },
     {
         id: "9",
@@ -100,6 +168,8 @@ export const employees: Employee[] = [
         department: "HR",
         status: "Active",
         joinedDate: "2023-03-15",
+        currency: "SAR",
+        salary: 12000,
     },
     {
         id: "10",
@@ -110,6 +180,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2023-04-10",
+        currency: "USD",
+        salary: 14000,
     },
     {
         id: "11",
@@ -120,6 +192,8 @@ export const employees: Employee[] = [
         department: "Marketing",
         status: "Active",
         joinedDate: "2022-09-01",
+        currency: "SAR",
+        salary: 13500,
     },
     {
         id: "12",
@@ -130,6 +204,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2023-02-18",
+        currency: "USD",
+        salary: 14500,
     },
     {
         id: "13",
@@ -140,6 +216,8 @@ export const employees: Employee[] = [
         department: "Sales",
         status: "Active",
         joinedDate: "2021-07-22",
+        currency: "USD",
+        salary: 28000,
     },
     {
         id: "14",
@@ -150,6 +228,8 @@ export const employees: Employee[] = [
         department: "Sales",
         status: "Active",
         joinedDate: "2022-12-05",
+        currency: "USD",
+        salary: 11000,
     },
     {
         id: "15",
@@ -160,6 +240,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2023-05-11",
+        currency: "USD",
+        salary: 12500,
     },
     {
         id: "16",
@@ -170,6 +252,8 @@ export const employees: Employee[] = [
         department: "Design",
         status: "Active",
         joinedDate: "2022-10-10",
+        currency: "USD",
+        salary: 13000,
     },
     {
         id: "17",
@@ -180,6 +264,11 @@ export const employees: Employee[] = [
         department: "Finance",
         status: "Active",
         joinedDate: "2021-06-15",
+        nationality: "Saudi",
+        currency: "SAR",
+        salary: 19000,
+        isGosiApplicable: true,
+        isTaxApplicable: false,
     },
     {
         id: "18",
@@ -190,6 +279,8 @@ export const employees: Employee[] = [
         department: "Engineering",
         status: "Active",
         joinedDate: "2023-08-20",
+        currency: "USD",
+        salary: 16500,
     },
     {
         id: "19",
@@ -200,6 +291,8 @@ export const employees: Employee[] = [
         department: "Operations",
         status: "Active",
         joinedDate: "2020-11-11",
+        currency: "SAR",
+        salary: 22000,
     },
     {
         id: "20",
@@ -210,6 +303,8 @@ export const employees: Employee[] = [
         department: "Support",
         status: "Active",
         joinedDate: "2022-04-04",
+        currency: "SAR",
+        salary: 10500,
     },
     {
         id: "21",
@@ -220,6 +315,8 @@ export const employees: Employee[] = [
         department: "IT",
         status: "Active",
         joinedDate: "2021-08-08",
+        currency: "EGP",
+        salary: 14000,
     },
     {
         id: "22",
@@ -230,6 +327,8 @@ export const employees: Employee[] = [
         department: "IT",
         status: "Active",
         joinedDate: "2023-07-01",
+        currency: "EGP",
+        salary: 15000,
     },
     {
         id: "23",
@@ -240,6 +339,8 @@ export const employees: Employee[] = [
         department: "Marketing",
         status: "Active",
         joinedDate: "2022-03-14",
+        currency: "EGP",
+        salary: 11500,
     },
     {
         id: "24",
@@ -250,5 +351,7 @@ export const employees: Employee[] = [
         department: "Legal",
         status: "Active",
         joinedDate: "2021-09-25",
+        currency: "SAR",
+        salary: 24000,
     }
 ];

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
+import { EmployeeProvider } from "@/lib/employee-context";
 import { SidebarClient } from "@/components/layout/SidebarClient";
 import { Header } from "@/components/layout/Header";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -31,35 +32,38 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+      <EmployeeProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            suppressHydrationWarning
           >
-            <div className="flex h-screen overflow-hidden bg-zinc-50 dark:bg-zinc-900">
-              {/* Sidebar */}
-              <aside className="hidden md:block">
-                <SidebarClient />
-              </aside>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="flex h-screen overflow-hidden bg-zinc-50 dark:bg-zinc-900">
+                {/* Sidebar */}
+                <aside className="hidden md:block">
+                  <SidebarClient />
+                </aside>
 
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <Header />
-                <main className="flex-1 overflow-auto p-6">
-                  <PageTransition>
-                    {children}
-                  </PageTransition>
-                  <Toaster richColors position="top-right" />
-                </main>
+                <div className="flex flex-col flex-1 overflow-hidden">
+                  <Header />
+                  <main className="flex-1 overflow-auto p-6">
+                    <PageTransition>
+                      {children}
+                    </PageTransition>
+                    <Toaster richColors position="top-right" />
+                  </main>
+                </div>
               </div>
-            </div>
-          </ThemeProvider>
-        </body>
-      </html>
+            </ThemeProvider>
+          </body>
+        </html>
+      </EmployeeProvider>
     </AuthProvider>
   );
 }

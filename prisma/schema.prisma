@@ -45,6 +45,8 @@ model Employee {
   timeOffRequests TimeOffRequest[]
   contracts       Contract[]
   documents       Document[]
+  workflowInstances WorkflowInstance[]
+  assets          Asset[]
   
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -134,4 +136,80 @@ model Candidate {
   updatedAt    DateTime  @updatedAt
 
   @@index([jobId])
+}
+
+model Workflow {
+  id          String         @id @default(cuid())
+  organizationId String
+  name        String
+  description String?
+  type        String         // ONBOARDING, OFFBOARDING
+  tasks       WorkflowTask[]
+  instances   WorkflowInstance[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([organizationId])
+}
+
+model WorkflowTask {
+  id          String   @id @default(cuid())
+  workflowId  String
+  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  role        String   @default("Employee") // HR, IT, Manager, Employee
+  order       Int      @default(0)
+
+  @@index([workflowId])
+}
+
+model WorkflowInstance {
+  id          String   @id @default(cuid())
+  workflowId  String
+  workflow    Workflow @relation(fields: [workflowId], references: [id])
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  status      String   @default("In Progress") // In Progress, Completed
+  tasks       WorkflowInstanceTask[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workflowId])
+  @@index([employeeId])
+}
+
+model WorkflowInstanceTask {
+  id          String           @id @default(cuid())
+  instanceId  String
+  instance    WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  role        String
+  isCompleted Boolean          @default(false)
+  completedAt DateTime?
+  completedBy String?          // Clerk ID or name
+
+  @@index([instanceId])
+}
+
+model Asset {
+  id          String    @id @default(cuid())
+  organizationId String
+  name        String
+  brand       String?
+  serialNumber String?
+  category    String    // Laptop, Phone, Keys, Badge
+  notes       String?
+  employeeId  String?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  status      String    @default("In Inventory") // In Inventory, Assigned, Damaged, Lost
+  assignedAt  DateTime?
+  returnedAt  DateTime?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([organizationId])
+  @@index([employeeId])
 }
