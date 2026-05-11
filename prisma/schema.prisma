@@ -23,12 +23,63 @@ model Employee {
   avatar       String?
   joinedDate   DateTime  @default(now())
   
+  // Personal
+  dateOfBirth  DateTime?
+  gender       String?
+  maritalStatus String?
+  
+  // Contact
+  phone        String?
+  address      String?
+  
+  // Financial
+  bankName     String?
+  accountNumber String?
+  salary       Float?
+  
+  // Emergency
+  emergencyContactName  String?
+  emergencyContactRel   String?
+  emergencyContactPhone String?
+  
   timeOffRequests TimeOffRequest[]
+  contracts       Contract[]
+  documents       Document[]
   
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   @@index([organizationId])
+}
+
+model Contract {
+  id           String    @id @default(cuid())
+  employeeId   String
+  employee     Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  type         String    // Full-time, Part-time, Freelance, etc.
+  startDate    DateTime
+  endDate      DateTime?
+  documentUrl  String?
+  status       String    @default("Active") // Active, Expired, Terminated
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([employeeId])
+}
+
+model Document {
+  id           String    @id @default(cuid())
+  employeeId   String
+  employee     Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  name         String
+  type         String    // ID, Resume, Certificate, etc.
+  url          String
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([employeeId])
 }
 
 model TimeOffRequest {
