@@ -19,8 +19,6 @@ export function EmployeeProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                // Merge with initial data to ensure new fields/employees are included if structure changes
-                // but prioritize saved values for existing employees
                 const merged = initialEmployees.map(initialEmp => {
                     const savedEmp = parsed.find((p: any) => p.id === initialEmp.id);
                     return savedEmp ? { ...initialEmp, ...savedEmp } : initialEmp;
@@ -32,16 +30,21 @@ export function EmployeeProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    const updateEmployee = (id: string, updates: Partial<Employee>) => {
+    const updateEmployee = React.useCallback((id: string, updates: Partial<Employee>) => {
         setEmployees(prev => {
             const updated = prev.map(emp => emp.id === id ? { ...emp, ...updates } : emp);
             localStorage.setItem("super-hr-employees", JSON.stringify(updated));
             return updated;
         });
-    };
+    }, []);
+
+    const value = React.useMemo(() => ({
+        employees,
+        updateEmployee
+    }), [employees, updateEmployee]);
 
     return (
-        <EmployeeContext.Provider value={{ employees, updateEmployee }}>
+        <EmployeeContext.Provider value={value}>
             {children}
         </EmployeeContext.Provider>
     );

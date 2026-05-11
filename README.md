@@ -289,6 +289,14 @@ f:/Super HR - Antigravity/
 - **Skill Proficiency**: AI analysis of talent stack
 - **Growth Tracking**: Career progression monitoring
 
+### 📤 **Offboarding Intelligence (Respectful Departure)**
+- **Interactive Departure Checklist**: Granular task management across IT, HR, Finance, and Legal.
+- **Select All/Individual Toggle**: Full control over which tasks are activated for each employee.
+- **Financial Settlement Intelligence**: Auto-calculation of final salary, leave payouts, and End of Service benefits.
+- **Offboarding Dashboard**: Centralized tracking with visual task momentum progress bars.
+- **Document Tracking**: Real-time status for Experience Letters and Resignation documents.
+- **Resilient Fallback System**: "Virtual Demo Mode" allows full workflow testing even without live DB connectivity.
+
 ### 🎨 **UI/UX Features**
 - **Dark Mode**: System-aware theme switching
 - **Glassmorphism Design**: Modern frosted glass aesthetics
@@ -703,6 +711,20 @@ For questions or support:
 - ✅ Assessment center
 - ✅ Dark mode support
 - ✅ Responsive design
+
+---
+
+## 17. Recent Updates (Offboarding Intelligence)
+
+### 🚀 High-Fidelity Departure Workflows
+We have recently revolutionized the employee exit experience by moving from static forms to an interactive, task-driven intelligence system.
+
+#### **Key Enhancements:**
+1. **Granular Task Control**: Admins can now select/deselect specific tasks (e.g., Laptop Recovery, Experience Letter) before finalizing an exit, ensuring the workflow fits the employee's unique situation.
+2. **Bulk Operations**: Integrated "Select All" functionality for rapid checklist setup.
+3. **Smart Resilience**: Implemented a fallback engine that provides the **8 Agreed Standard Tasks** automatically if database templates are missing.
+4. **Auto-Registration**: The system now automatically registers mock/context employees into the database on-the-fly during offboarding initiation to prevent data-sync crashes.
+5. **Stability Overhaul**: Resolved critical "Maximum update depth" re-render loops by memoizing the global Employee Context and optimizing event propagation in the checklist UI.
 
 ---
 

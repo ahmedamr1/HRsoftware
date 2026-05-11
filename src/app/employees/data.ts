@@ -353,5 +353,19 @@ export const employees: Employee[] = [
         joinedDate: "2021-09-25",
         currency: "SAR",
         salary: 24000,
+    },
+    {
+        id: "25",
+        firstName: "Azza",
+        lastName: "Salah",
+        email: "azza.salah@superhr.com",
+        role: "Senior HR Business Partner",
+        department: "HR",
+        status: "Active",
+        joinedDate: "2024-01-10",
+        nationality: "Egyptian",
+        currency: "EGP",
+        salary: 45000,
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Azza",
     }
 ];
