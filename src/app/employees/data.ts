@@ -33,6 +33,8 @@ export type Employee = {
     laptopAllowance?: number;
     overtime?: number;
     bonus?: number;
+    skills?: string[];
+    summary?: string;
 };
 
 export const employees: Employee[] = [
@@ -54,6 +56,8 @@ export const employees: Employee[] = [
         transportationAllowance: 1000,
         otherAllowance: 500,
         laptopAllowance: 200,
+        skills: ["Leadership", "Strategy", "Public Speaking", "Finance"],
+        summary: "Strategic visionary leading Super HR into the AI era.",
     },
     {
         id: "2",
@@ -75,6 +79,8 @@ export const employees: Employee[] = [
         laptopAllowance: 0,
         overtime: 0,
         bonus: 0,
+        skills: ["Node.js", "System Architecture", "Cloud Computing", "Team Building"],
+        summary: "Architect of our technical infrastructure and R&D leader.",
     },
     {
         id: "3",
@@ -107,6 +113,8 @@ export const employees: Employee[] = [
         salary: 22000,
         housingAllowance: 5000,
         transportationAllowance: 2000,
+        skills: ["React", "TypeScript", "Next.js", "PostgreSQL", "Tailwind"],
+        summary: "Full-stack expert specializing in high-performance web applications.",
     },
     {
         id: "5",

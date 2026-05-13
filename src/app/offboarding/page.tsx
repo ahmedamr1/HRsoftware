@@ -31,15 +31,19 @@ export default function OffboardingPage() {
     const [offboardingList, setOffboardingList] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState<any>(null);
-
+    const [mounted, setMounted] = useState(false);
+    
     // Simulate if user is "part of it" - Ahmed Amr (ID 4) is an active employee, so he's not currently offboarding
     const isPartOfOffboarding = isAdmin || false; 
 
     useEffect(() => {
+        setMounted(true);
         if (isAdmin) {
             fetchOffboardingInstances();
         }
     }, [isAdmin]);
+
+    if (!mounted) return null; // Prevent hydration mismatch
 
     const fetchOffboardingInstances = async () => {
         setLoading(true);

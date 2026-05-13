@@ -22,12 +22,15 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth-context";
+import CareerPathModal from "@/components/employees/CareerPathModal";
 
 function EmployeesContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const currentView = searchParams.get('view');
     const { userRole } = useAuth();
+    
+    const [selectedEmployeeForCareer, setSelectedEmployeeForCareer] = useState<{ id: string, name: string } | null>(null);
     
     const { employees: employeeList } = useEmployees();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -120,17 +123,21 @@ function EmployeesContent() {
         reader.readAsBinaryString(file);
     };
 
-    const handleAction = (action: string, name: string) => {
+    const handleAction = (action: string, employee: any) => {
         if (action === "Career Path") {
-            toast.success(`AI modeling ${name}'s career trajectory: Next potential role: Senior Specialist.`, {
-                icon: <Brain className="h-4 w-4 text-blue-500" />
-            });
+            setSelectedEmployeeForCareer({ id: employee.id, name: `${employee.firstName} ${employee.lastName}` });
             return;
         }
-        toast.info(`${action} initiated for ${name}`);
+        toast.info(`${action} initiated for ${employee.firstName}`);
     };
     return (
         <div className="space-y-6 text-left">
+            <CareerPathModal 
+                isOpen={!!selectedEmployeeForCareer}
+                onClose={() => setSelectedEmployeeForCareer(null)}
+                employeeId={selectedEmployeeForCareer?.id || ""}
+                employeeName={selectedEmployeeForCareer?.name || ""}
+            />
             {!currentView && (
                 <>
                     <div className="flex items-center justify-between">
@@ -226,17 +233,17 @@ function EmployeesContent() {
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="w-56 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-zinc-200 dark:border-zinc-800 shadow-2xl">
                                                     <DropdownMenuLabel className="text-xs font-black uppercase tracking-widest text-zinc-500 p-3">Intelligence Hub</DropdownMenuLabel>
-                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Career Path", employee.firstName)}>
+                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Career Path", employee)}>
                                                         <Brain className="h-4 w-4 text-blue-500" /> AI Career Pathing
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Security Check", employee.firstName)}>
+                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Security Check", employee)}>
                                                         <ShieldCheck className="h-4 w-4 text-emerald-500" /> Security Audit
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Email", employee.firstName)}>
+                                                    <DropdownMenuItem className="cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Email", employee)}>
                                                         <Mail className="h-4 w-4 text-zinc-400" /> Send Email
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator className="bg-zinc-100 dark:bg-zinc-800" />
-                                                    <DropdownMenuItem className="text-rose-600 dark:text-rose-400 cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Termination", employee.firstName)}>
+                                                    <DropdownMenuItem className="text-rose-600 dark:text-rose-400 cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Termination", employee)}>
                                                         <Trash2 className="h-4 w-4" /> Terminate
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>

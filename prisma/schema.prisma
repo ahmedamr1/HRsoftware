@@ -37,6 +37,10 @@ model Employee {
   accountNumber String?
   salary       Float?
   
+  // AI & Skills
+  skills       String[]  @default([])
+  summary      String?   @db.Text // AI generated or manually added bio
+  
   // Emergency
   emergencyContactName  String?
   emergencyContactRel   String?

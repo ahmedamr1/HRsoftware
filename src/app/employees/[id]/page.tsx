@@ -16,7 +16,7 @@ import {
     User, Mail, Phone, MapPin, Briefcase, Calendar, FileText,
     CreditCard, HeartPulse, ShieldAlert, FileSpreadsheet, Download,
     CalendarDays, Edit2, PlusCircle, Check, X, Users, Laptop, Sparkles, LogOut, MoreHorizontal, AlertCircle,
-    ShieldCheck
+    ShieldCheck, Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -29,6 +29,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import CareerPathModal from "@/components/employees/CareerPathModal";
+import { Brain } from "lucide-react";
 
 export default function EmployeeProfilePage() {
     const { userRole } = useAuth();
@@ -42,6 +44,8 @@ export default function EmployeeProfilePage() {
     const searchParams = useSearchParams();
     const initialTab = searchParams.get('tab') || "personal";
     const [activeTab, setActiveTab] = useState(initialTab);
+    
+    const [selectedEmployeeForCareer, setSelectedEmployeeForCareer] = useState<{ id: string, name: string } | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -248,6 +252,12 @@ export default function EmployeeProfilePage() {
 
     return (
         <div className="space-y-6">
+            <CareerPathModal 
+                isOpen={!!selectedEmployeeForCareer}
+                onClose={() => setSelectedEmployeeForCareer(null)}
+                employeeId={selectedEmployeeForCareer?.id || ""}
+                employeeName={selectedEmployeeForCareer?.name || ""}
+            />
             {/* Hero Section */}
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
                 <Avatar className="h-24 w-24 border-4 border-zinc-50 dark:border-zinc-900 shadow-xl">
@@ -311,6 +321,7 @@ export default function EmployeeProfilePage() {
                     <TabsTrigger value="documents" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Documents</TabsTrigger>
                     <TabsTrigger value="leaves" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Leaves</TabsTrigger>
                     <TabsTrigger value="assets" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Assets</TabsTrigger>
+                    <TabsTrigger value="lifecycle" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Lifecycle</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="personal" className="mt-0">
@@ -953,6 +964,106 @@ export default function EmployeeProfilePage() {
                             )}
                         </CardContent>
                     </Card>
+                </TabsContent>
+
+                <TabsContent value="lifecycle" className="mt-0">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* AI Intelligence Card */}
+                        <Card className="border-zinc-200 dark:border-zinc-800 bg-zinc-950 text-white overflow-hidden shadow-2xl relative col-span-1 md:col-span-2">
+                            <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12">
+                                <Brain size={160} />
+                            </div>
+                            <CardHeader className="relative z-10">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-2xl bg-blue-600 flex items-center justify-center">
+                                            <Sparkles size={20} className="text-white" />
+                                        </div>
+                                        <div>
+                                            <CardTitle className="text-xl font-black">AI Career Intelligence</CardTitle>
+                                            <p className="text-xs text-zinc-400 font-medium">Predictive modeling for professional growth</p>
+                                        </div>
+                                    </div>
+                                    <Badge className="bg-blue-600/20 text-blue-400 border-none text-[10px] font-black uppercase tracking-widest px-3">Advanced Analytics</Badge>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="relative z-10 pb-8">
+                                <div className="max-w-2xl">
+                                    <p className="text-sm text-zinc-400 mb-6 leading-relaxed">
+                                        Analyze {employee.firstName}'s current role, technical stack, and performance history to generate a personalized career roadmap and identify specific skill gaps.
+                                    </p>
+                                    <Button 
+                                        onClick={() => setSelectedEmployeeForCareer({ id: employee.id, name: `${employee.firstName} ${employee.lastName}` })}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white rounded-full font-black text-xs px-8 h-12 shadow-xl shadow-blue-500/20"
+                                    >
+                                        <Brain className="mr-2 h-4 w-4" /> Generate Career Roadmap
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Operational Actions */}
+                        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xl">
+                            <CardHeader>
+                                <CardTitle className="text-lg font-black flex items-center gap-2"><Briefcase className="text-indigo-500" /> Operational Actions</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                                <Button 
+                                    variant="outline" 
+                                    className="w-full justify-start gap-3 rounded-2xl h-14 font-bold border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+                                    onClick={() => handleLifecycleAction("onboarding")}
+                                >
+                                    <Sparkles className="h-5 w-5 text-blue-500" /> 
+                                    <div className="text-left">
+                                        <p className="text-sm">Initiate Onboarding</p>
+                                        <p className="text-[10px] text-zinc-400 font-medium">Reset workflow to day zero</p>
+                                    </div>
+                                </Button>
+                                <Button 
+                                    variant="outline" 
+                                    className="w-full justify-start gap-3 rounded-2xl h-14 font-bold border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+                                    onClick={() => toast.info("Security audit initiated")}
+                                >
+                                    <ShieldCheck className="h-5 w-5 text-emerald-500" /> 
+                                    <div className="text-left">
+                                        <p className="text-sm">Security Audit</p>
+                                        <p className="text-[10px] text-zinc-400 font-medium">Verify access and compliance</p>
+                                    </div>
+                                </Button>
+                            </CardContent>
+                        </Card>
+
+                        {/* Critical Actions */}
+                        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xl">
+                            <CardHeader>
+                                <CardTitle className="text-lg font-black flex items-center gap-2"><AlertCircle className="text-rose-500" /> Critical Actions</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                                <Button 
+                                    variant="outline" 
+                                    className="w-full justify-start gap-3 rounded-2xl h-14 font-bold border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-rose-600 hover:text-rose-700 hover:border-rose-100"
+                                    onClick={() => handleLifecycleAction("offboarding")}
+                                >
+                                    <LogOut className="h-5 w-5" /> 
+                                    <div className="text-left">
+                                        <p className="text-sm">Initiate Offboarding</p>
+                                        <p className="text-[10px] text-zinc-400 font-medium">Formal exit process</p>
+                                    </div>
+                                </Button>
+                                <Button 
+                                    variant="outline" 
+                                    className="w-full justify-start gap-3 rounded-2xl h-14 font-bold border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-500"
+                                    onClick={() => toast.info("Termination flow placeholder")}
+                                >
+                                    <Trash2 className="h-5 w-5" /> 
+                                    <div className="text-left">
+                                        <p className="text-sm">Immediate Termination</p>
+                                        <p className="text-[10px] text-zinc-400 font-medium">Emergency access revocation</p>
+                                    </div>
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </TabsContent>
 
             </Tabs>
