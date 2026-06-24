@@ -29,7 +29,8 @@ export default function LoginPage() {
             return;
         }
 
-        const role = email.toLowerCase() === "admin@waffyapp.com" ? "admin" : "employee";
+        const adminEmails = ["admin@waffyapp.com", "a.amr@waffyapp.com"];
+        const role = adminEmails.includes(email.toLowerCase()) ? "admin" : "employee";
         login(role);
         router.push("/");
     };
