@@ -16,12 +16,21 @@ import {
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 
+import { useAuth } from "@/lib/auth-context";
+
 export default function RecruitmentPage() {
-    const jobs = [
-        { id: "1", title: "Senior Frontend Engineer", dept: "Engineering", location: "Remote", type: "Full-time", candidates: 12, status: "Open" },
-        { id: "2", title: "Product Designer", dept: "Design", location: "New York", type: "Full-time", candidates: 8, status: "Open" },
-        { id: "3", title: "HR Business Partner", dept: "HR", location: "London", type: "Contract", candidates: 4, status: "Closed" },
+    const { userRole } = useAuth();
+    const isAdmin = userRole === "admin";
+    // Mock current user ID for manager (assuming ID "2" is the manager)
+    const currentUserId = userRole === 'manager' ? "2" : null;
+
+    const allJobs = [
+        { id: "1", title: "Senior Frontend Engineer", dept: "Engineering", location: "Remote", type: "Full-time", candidates: 12, status: "Open", managerId: "2" },
+        { id: "2", title: "Product Designer", dept: "Design", location: "New York", type: "Full-time", candidates: 8, status: "Open", managerId: "1" },
+        { id: "3", title: "HR Business Partner", dept: "HR", location: "London", type: "Contract", candidates: 4, status: "Closed", managerId: "1" },
     ];
+
+    const jobs = isAdmin ? allJobs : allJobs.filter(job => job.managerId === currentUserId);
 
     const handleAction = (action: string, title: string) => {
         toast.info(`${action} initiated for ${title}`);
@@ -45,14 +54,16 @@ export default function RecruitmentPage() {
                             Public Career Page
                         </Link>
                     </Button>
-                    <Button
-                        className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/20 border-none px-6 transition-all active:scale-95 h-12 font-black uppercase tracking-widest text-[10px] rounded-xl flex items-center"
-                        asChild
-                    >
-                        <Link href="/recruitment/jobs">
-                            <Plus className="mr-2 h-4 w-4" /> Create Job Posting
-                        </Link>
-                    </Button>
+                    {isAdmin && (
+                        <Button
+                            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/20 border-none px-6 transition-all active:scale-95 h-12 font-black uppercase tracking-widest text-[10px] rounded-xl flex items-center"
+                            asChild
+                        >
+                            <Link href="/recruitment/jobs">
+                                <Plus className="mr-2 h-4 w-4" /> Create Job Posting
+                            </Link>
+                        </Button>
+                    )}
                 </div>
             </div>
 
@@ -75,8 +86,9 @@ export default function RecruitmentPage() {
             </div>
 
             {/* AI Intelligence Hub - Sub-sections */}
-            <div className="grid gap-6 md:grid-cols-2">
-                <Card className="bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border-blue-500/20 shadow-xl group overflow-hidden">
+            {isAdmin && (
+                <div className="grid gap-6 md:grid-cols-2">
+                    <Card className="bg-gradient-to-br from-blue-600/10 to-indigo-600/10 border-blue-500/20 shadow-xl group overflow-hidden">
                     <CardHeader className="p-4 pb-2 border-b border-blue-500/10">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-xs font-black uppercase tracking-widest text-blue-600">Proactive Talent Discovery</CardTitle>
@@ -163,9 +175,9 @@ export default function RecruitmentPage() {
                         <Button className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black shadow-lg text-[10px] font-black uppercase tracking-widest px-6" asChild>
                             <Link href="/recruitment/referrals">View Hub</Link>
                         </Button>
-                    </CardContent>
-                </Card>
-            </div>
+                    </Card>
+                </div>
+            )}
 
             <Card className="bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden">
                 <CardHeader className="bg-zinc-50/50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
@@ -280,11 +292,11 @@ export default function RecruitmentPage() {
                         </TableHeader>
                         <TableBody>
                             {[
-                                { name: "Samantha Lee", role: "Product Designer", stage: "Interview", date: "2d ago", score: 92 },
-                                { name: "John Doe", role: "Frontend Dev", stage: "Applied", date: "1h ago", score: 82 },
-                                { name: "Maria Garcia", role: "Frontend Dev", stage: "Technical", date: "5d ago", score: 95 },
-                                { name: "James Wilson", role: "Backend Lead", stage: "Offered", date: "1w ago", score: 88 }
-                            ].map((cand, i) => (
+                                { name: "Samantha Lee", role: "Product Designer", stage: "Interview", date: "2d ago", score: 92, jobId: "2" },
+                                { name: "John Doe", role: "Senior Frontend Engineer", stage: "Applied", date: "1h ago", score: 82, jobId: "1" },
+                                { name: "Maria Garcia", role: "Senior Frontend Engineer", stage: "Technical", date: "5d ago", score: 95, jobId: "1" },
+                                { name: "James Wilson", role: "HR Business Partner", stage: "Offered", date: "1w ago", score: 88, jobId: "3" }
+                            ].filter(cand => isAdmin || jobs.some(j => j.id === cand.jobId)).map((cand, i) => (
                                 <TableRow key={i} className="group hover:bg-zinc-100/30 dark:hover:bg-zinc-800/30 border-zinc-200 dark:border-zinc-800 transition-colors">
                                     <TableCell>
                                         <div className="flex items-center gap-3">
