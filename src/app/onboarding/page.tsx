@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 
 export default function OnboardingPage() {
     const { userRole } = useAuth();
-    const isAdmin = userRole === "admin";
+    const isAdmin = userRole === "admin" || userRole === "manager";
     
     const [tasks, setTasks] = useState([
         { id: 1, title: "Sign Employment Contract", completed: true, category: "Legal" },

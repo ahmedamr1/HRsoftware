@@ -17,8 +17,13 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/lib/auth-context";
 
 export default function AssetsPage() {
+    const { userRole } = useAuth();
+    const isAdmin = userRole === "admin";
+    const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : null);
+
     const [assets, setAssets] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -31,7 +36,11 @@ export default function AssetsPage() {
             const res = await fetch('/api/assets');
             if (res.ok) {
                 const data = await res.json();
-                setAssets(data);
+                if (isAdmin) {
+                    setAssets(data);
+                } else {
+                    setAssets(data.filter((a: any) => a.employee?.id === currentUserId));
+                }
             }
         } catch (err) {
             console.error("Failed to fetch assets:", err);
@@ -70,9 +79,11 @@ export default function AssetsPage() {
                     <Button variant="outline" className="rounded-full border-zinc-200 dark:border-zinc-800">
                         <Filter size={14} className="mr-2" /> Filter
                     </Button>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
-                        <Plus size={14} className="mr-2" /> Register Asset
-                    </Button>
+                    {isAdmin && (
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
+                            <Plus size={14} className="mr-2" /> Register Asset
+                        </Button>
+                    )}
                 </div>
             </div>
 

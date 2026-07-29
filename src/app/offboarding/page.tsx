@@ -18,7 +18,7 @@ import Link from "next/link";
 
 export default function OffboardingPage() {
     const { userRole } = useAuth();
-    const isAdmin = userRole === "admin";
+    const isAdmin = userRole === "admin" || userRole === "manager";
     
     const [tasks, setTasks] = useState([
         { id: 1, title: "Submit Formal Resignation", completed: true, category: "Legal" },

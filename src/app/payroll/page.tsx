@@ -24,7 +24,7 @@ export default function PayrollPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     // Simulate current user ID - in a real app this would come from AuthContext
-    const currentUserId = userRole === 'employee' ? "4" : null;
+    const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : null);
 
     // Helper to format salary with correct currency
     const formatSalary = (emp: any) => {
@@ -87,7 +87,8 @@ export default function PayrollPage() {
         return matchesRole && matchesSearch;
     });
 
-    const totals = employees.reduce((acc, emp) => {
+    const relevantEmployees = isAdmin ? employees : employees.filter(e => e.id === currentUserId);
+    const totals = relevantEmployees.reduce((acc, emp) => {
         const calc = calculateLocalizedPayroll(
             emp.salary || 0, 
             emp.nationality, 

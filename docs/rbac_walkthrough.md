@@ -1,30 +1,23 @@
 # 3-Tier Role-Based Access Control Implementation
 
-I have successfully implemented the 3-tier Role-Based Access Control system. The platform now distinctly recognizes `Admin`, `Manager`, and `Employee` roles, each with appropriate screen access and system authority.
+I have successfully implemented the 3-tier Role-Based Access Control system, including the granular self-service capabilities for Payroll and Assets.
 
 ## Changes Made
 
-### 1. Core Authentication & Login
-- **Added Manager Role**: Expanded the `Role` type in `auth-context.tsx` to include `"manager"`.
-- **Login Trigger**: Updated `login/page.tsx` so that logging in with `manager@waffyapp.com` automatically grants the Manager role. 
-  *(Admins use `admin@waffyapp.com`, Employees use any other `@waffyapp.com` email).*
+### 1. Self-Service Payroll & Assets
+- **Payroll**: Managers and Employees now have access to the `/payroll` screen. Instead of seeing the entire company's payroll liability, they see a personalized view displaying only their own salary disbursements.
+- **Assets**: Managers and Employees can now access the `/assets` screen to view equipment assigned directly to them. The "Register Asset" button has been hidden for non-admins.
 
-### 2. Sidebar Navigation Routing
-- Managers now have access to: **Dashboard**, **Profile**, **Culture & Pulse**, **Employees**, **Time Off**, **Recruitment**, **Onboarding**, **Offboarding**, **Performance**, and **Settings**.
-- They are intentionally **excluded** from **Assets**, **Org Chart**, and the global **Payroll** screen. (They can still view their personal payslips via their profile).
+### 2. Expanded Manager Access
+- Managers are now granted the ability to oversee Onboarding and Offboarding for their respective teams (simulated via the "Management" tabs on those screens).
+- The Org Chart is exposed to all users as a read-only visual hierarchy of the company.
 
-### 3. Screen Authority & Visibility
-- **Employees Directory (`/employees`)**: Managers now see a filtered list showing only their department (simulating direct reports for the mock data) rather than the entire company.
-- **Time Off (`/time-off`)**: Managers are granted "Admin-level" authority here, allowing them to view all requests from their team and approve/reject them.
-- **Performance (`/performance`)**: Managers are granted authority to initiate and track performance reviews for their team.
-- **Dashboard (`/page.tsx`)**: Managers see the intelligent company overview and task lists instead of the restricted employee self-service view.
+### 3. Sidebar Navigation Routing
+- The Sidebar dynamically renders `Assets` and `Payroll` for all roles, leaning on the pages' internal logic to render the correct UI (Admin dashboard vs. Employee self-service).
 
 ## Verification
 You can test this right now on your local server:
-1. Open [http://localhost:3000/login](http://localhost:3000/login)
-2. Log in with `manager@waffyapp.com`
-3. Notice that the sidebar includes `Recruitment` but hides `Payroll`.
-4. Click on `Employees` and notice the list is filtered down to their team (Engineering department, simulating the CTO's direct reports).
-
-> [!TIP]
-> The candidate salary hiding in Recruitment was noted; currently, the mock data doesn't expose candidate salaries in the UI, but the architecture is now set up to easily enforce this when the real database is hooked up.
+1. Log in as an `admin@waffyapp.com` to see the full global payroll and all 25 company assets.
+2. Log out, then log in with `employee@waffyapp.com` (Simulated User ID 4 - Ahmed Amr).
+3. Click on **Assets**: Notice how you only see the assets assigned specifically to Ahmed Amr, and cannot add new ones.
+4. Click on **Payroll**: Notice how the table only displays Ahmed Amr's historic salary disbursements, hiding the global company liability totals.
