@@ -36,15 +36,6 @@ export default function OffboardingPage() {
     // Simulate if user is "part of it" - Ahmed Amr (ID 4) is an active employee, so he's not currently offboarding
     const isPartOfOffboarding = isAdmin || false; 
 
-    useEffect(() => {
-        setMounted(true);
-        if (isAdmin) {
-            fetchOffboardingInstances();
-        }
-    }, [isAdmin]);
-
-    if (!mounted) return null; // Prevent hydration mismatch
-
     const fetchOffboardingInstances = async () => {
         setLoading(true);
         try {
@@ -59,6 +50,15 @@ export default function OffboardingPage() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        setMounted(true);
+        if (isAdmin) {
+            fetchOffboardingInstances();
+        }
+    }, [isAdmin]);
+
+    if (!mounted) return null; // Prevent hydration mismatch
 
     const toggleTask = (id: number) => {
         setTasks(prev => prev.map(t => {
