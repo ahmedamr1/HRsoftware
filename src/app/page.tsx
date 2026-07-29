@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
+import { useEmployees } from "@/lib/employee-context";
 
 export default function Dashboard() {
   const { userRole, logout } = useAuth();
@@ -31,6 +32,10 @@ export default function Dashboard() {
     toast.success("Task completed!");
   };
 
+  const { employees } = useEmployees();
+  const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : "1");
+  const currentUser = employees.find(e => e.id === currentUserId);
+
   const adminStats = [
     { title: "Total Talent", value: "124", change: "+12%", icon: Users, color: "blue" },
     { title: "Open Roles", value: "8", change: "+2", icon: Brain, color: "emerald" },
@@ -41,11 +46,11 @@ export default function Dashboard() {
   ];
 
   const employeeStats = [
-    { title: "Hours This Week", value: "38.5", change: "On Track", icon: Clock, color: "blue" },
-    { title: "Pending Tasks", value: "3", change: "2 Due Today", icon: CheckCircle2, color: "rose" },
-    { title: "Remaining PTO", value: "14 Days", change: "Expiring soon", icon: CalendarIcon, color: "orange" },
+    { title: "Role & Dept", value: currentUser?.role || "Employee", change: currentUser?.department || "General", icon: Users, color: "blue" },
+    { title: "Status", value: currentUser?.status || "Active", change: "Good Standing", icon: CheckCircle2, color: "emerald" },
+    { title: "Joined Year", value: currentUser ? new Date(currentUser.joinedDate).getFullYear().toString() : "2024", change: "Tenure", icon: CalendarIcon, color: "orange" },
     { title: "Performance", value: "4.9", change: "Top 5%", icon: Trophy, color: "yellow" },
-    { title: "Current Sprint", value: "Sync Phase", change: "82%", icon: Zap, color: "purple" },
+    { title: "Base Salary", value: currentUser?.salary ? `${currentUser.salary.toLocaleString()}` : "N/A", change: currentUser?.currency || "USD", icon: Activity, color: "rose" },
     { title: "Next 1-on-1", value: "Tomorrow", change: "2:00 PM", icon: MessageSquare, color: "emerald" },
   ];
 
