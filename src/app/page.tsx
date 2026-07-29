@@ -1,6 +1,6 @@
 "use client"
 
-import { Building2, Plus, Search, Sparkles, Brain, Users, TrendingDown, ShieldAlert, Activity, Calendar as CalendarIcon, Zap, ArrowUpRight, CheckCircle2, Info, Clock, Trophy, MessageSquare, ClipboardList, TrendingUp } from "lucide-react";
+import { Building2, Plus, Search, Sparkles, Brain, Users, TrendingDown, ShieldAlert, Activity, Calendar as CalendarIcon, Zap, ArrowUpRight, CheckCircle2, Info, Clock, Trophy, MessageSquare, ClipboardList, TrendingUp, Eye, EyeOff } from "lucide-react";
 import { Button as UIButton } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ export default function Dashboard() {
 
   const [searchMode, setSearchMode] = useState<"standard" | "ai">("standard");
   const [aiAnalysisVisible, setAiAnalysisVisible] = useState(true);
+  const [showSalary, setShowSalary] = useState(false);
 
   const handleAction = (msg: string) => {
     toast.success(msg);
@@ -50,7 +51,7 @@ export default function Dashboard() {
     { title: "Status", value: currentUser?.status || "Active", change: "Good Standing", icon: CheckCircle2, color: "emerald" },
     { title: "Joined Year", value: currentUser ? new Date(currentUser.joinedDate).getFullYear().toString() : "2024", change: "Tenure", icon: CalendarIcon, color: "orange" },
     { title: "Performance", value: "4.9", change: "Top 5%", icon: Trophy, color: "yellow" },
-    { title: "Base Salary", value: currentUser?.salary ? `${currentUser.salary.toLocaleString()}` : "N/A", change: currentUser?.currency || "USD", icon: Activity, color: "rose" },
+    { title: "Base Salary", value: showSalary ? (currentUser?.salary ? `${currentUser.salary.toLocaleString()}` : "N/A") : "****", change: currentUser?.currency || "USD", icon: Activity, color: "rose", isMaskable: true },
     { title: "Next 1-on-1", value: "Tomorrow", change: "2:00 PM", icon: MessageSquare, color: "emerald" },
   ];
 
@@ -194,7 +195,14 @@ export default function Dashboard() {
               <stat.icon size={12} className="text-zinc-400" />
             </CardHeader>
             <CardContent className="p-3 pt-0">
-              <div className="text-xl font-black text-black dark:text-zinc-50 tracking-tighter">{stat.value}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-xl font-black text-black dark:text-zinc-50 tracking-tighter">{stat.value}</div>
+                {stat.isMaskable && (
+                  <UIButton variant="ghost" size="icon" className="h-6 w-6 text-zinc-400 hover:text-blue-500 rounded-full" onClick={() => setShowSalary(!showSalary)}>
+                    {showSalary ? <EyeOff size={14} /> : <Eye size={14} />}
+                  </UIButton>
+                )}
+              </div>
               <div className="flex items-center gap-1 mt-1">
                 <span className={`text-[10px] font-bold ${stat.change.startsWith('+') || stat.change.includes('On') || stat.change.includes('Top') ? 'text-emerald-500' : 'text-rose-500'}`}>
                   {stat.change}
