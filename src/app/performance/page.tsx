@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, MessageSquare, Target, ArrowUpRight, TrendingUp, Award, Sparkles, Brain, Zap, Activity } from "lucide-react";
+import { Star, MessageSquare, Target, ArrowUpRight, TrendingUp, Award, Sparkles, Brain, Zap, Activity, Rocket } from "lucide-react";
 import { PerformanceModal } from "@/components/performance/PerformanceModal";
 import LaunchReviewCycleModal from "@/components/performance/LaunchReviewCycleModal";
 import { useAuth } from "@/lib/auth-context";
