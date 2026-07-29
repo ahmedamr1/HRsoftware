@@ -36,10 +36,15 @@ function EmployeesContent() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Simulate current user ID - in a real app this would come from AuthContext
-    const currentUserId = userRole === 'employee' ? "4" : null;
+    // We simulate user ID "2" (CTO) for the manager, and "4" for the employee.
+    const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : null);
 
     const filteredEmployeeList = employeeList.filter(e => {
         if (userRole === 'admin') return true;
+        if (userRole === 'manager') {
+            // Managers only see their direct reports. Mocking this by department since DB lacks strict hierarchy yet.
+            return e.directManagerId === currentUserId || e.department === "Engineering"; 
+        }
         if (userRole === 'employee') {
             return e.id === currentUserId || 
                    e.directManagerId === currentUserId || 

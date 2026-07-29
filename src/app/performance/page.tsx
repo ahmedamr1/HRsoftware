@@ -15,7 +15,7 @@ import { Calendar, Users, Shield } from "lucide-react";
 
 export default function PerformancePage() {
     const { userRole } = useAuth();
-    const isAdmin = userRole === "admin";
+    const isAdmin = userRole === "admin" || userRole === "manager";
     const [selectedReview, setSelectedReview] = useState<any>(null);
     const [isLaunchModalOpen, setIsLaunchModalOpen] = useState(false);
 

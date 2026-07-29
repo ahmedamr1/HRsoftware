@@ -21,7 +21,7 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function TimeOffPage() {
     const { userRole } = useAuth();
-    const isAdmin = userRole === "admin";
+    const isAdmin = userRole === "admin" || userRole === "manager";
     const [allRequests, setAllRequests] = useState<TimeOffRequest[]>(timeOffRequests);
     const requests = isAdmin ? allRequests : allRequests.filter(r => r.user === "Ahmed Amr");
     const fileInputRef = useRef<HTMLInputElement>(null);
