@@ -168,13 +168,13 @@ function EmployeesContent() {
                                     <Button variant="outline" className="border-zinc-200 dark:border-zinc-800 rounded-full" onClick={() => fileInputRef.current?.click()}>
                                         <Plus size={14} className="mr-2" /> Bulk Upload
                                     </Button>
+                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20" asChild>
+                                        <Link href="/employees/new">
+                                            <Plus className="mr-2 h-4 w-4" /> Add Member
+                                        </Link>
+                                    </Button>
                                 </>
                             )}
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20" asChild>
-                                <Link href="/employees/new">
-                                    <Plus className="mr-2 h-4 w-4" /> Add Member
-                                </Link>
-                            </Button>
                         </div>
                     </div>
 
