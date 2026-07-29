@@ -317,7 +317,9 @@ export default function EmployeeProfilePage() {
                     )}
                     <TabsTrigger value="emergency" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Emergency</TabsTrigger>
                     <TabsTrigger value="managers" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Line Managers</TabsTrigger>
-                    <TabsTrigger value="contracts" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Contracts</TabsTrigger>
+                    {userRole === 'admin' && (
+                        <TabsTrigger value="contracts" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Contracts</TabsTrigger>
+                    )}
                     <TabsTrigger value="documents" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Documents</TabsTrigger>
                     <TabsTrigger value="leaves" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Leaves</TabsTrigger>
                     <TabsTrigger value="assets" className="rounded-full px-6 font-bold text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 data-[state=active]:shadow-sm">Assets</TabsTrigger>
@@ -687,7 +689,8 @@ export default function EmployeeProfilePage() {
                     </Card>
                 </TabsContent>
                 
-                <TabsContent value="contracts" className="mt-0">
+                {userRole === 'admin' && (
+                    <TabsContent value="contracts" className="mt-0">
                     <Card className="border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl shadow-xl">
                         <CardHeader>
                             <CardTitle className="text-lg font-black flex items-center gap-2"><FileText className="text-indigo-500" /> Contracts & Agreements</CardTitle>
@@ -755,6 +758,7 @@ export default function EmployeeProfilePage() {
                         </CardContent>
                     </Card>
                 </TabsContent>
+                )}
                 
                 <TabsContent value="documents" className="mt-0">
                     <Card className="border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl shadow-xl">

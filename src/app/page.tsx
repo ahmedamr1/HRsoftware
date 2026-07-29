@@ -11,7 +11,7 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function Dashboard() {
   const { userRole, logout } = useAuth();
-  const isAdmin = userRole === "admin" || userRole === "manager";
+  const isAdmin = userRole === "admin";
 
   const [tasks, setTasks] = useState([
     { id: 1, text: isAdmin ? "Approve Q1 Budget" : "Submit Expense Report", category: isAdmin ? "Finance" : "Admin", priority: "High" },
