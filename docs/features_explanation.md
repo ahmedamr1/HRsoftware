@@ -50,11 +50,22 @@ The largest module, located under `/recruitment`. It manages the entire ATS (App
 Located under `/payroll`. Handles the financial distribution logic.
 
 ### Core Capabilities
+- **Role-Based Visibility**: Admins can view and process global company payroll. Managers and Employees are restricted to a **Self-Service View**, strictly rendering their own historical salary disbursements.
 - **Salary Disbursements**: Admin view to authorize monthly company-wide payroll.
 - **Payslip Generation**: Employees can view and download PDF versions of their monthly payslips via `PayslipModal.tsx`.
 - **Tax Withholdings Engine**: A calculation utility that deducts standard taxes from gross pay based on regional/mock rules.
 - **Run Payroll Workflow**: A critical transactional flow.
     - *Developer Note*: This requires ACID-compliant database transactions. If one employee's payroll fails, the batch should either rollback or flag the specific error safely.
+
+---
+
+## 4.5 📦 Asset Intelligence
+
+Located under `/assets`. Tracks company inventory and equipment assignments.
+
+### Core Capabilities
+- **Self-Service View**: Managers and Employees can view assets directly assigned to them.
+- **Admin Management**: Admins have full CRUD (Create, Read, Update, Delete) access to register new assets, decommission broken ones, and view the entire company inventory.
 
 ---
 

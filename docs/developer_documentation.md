@@ -56,6 +56,26 @@ The platform is divided into several key modules, each addressing a specific HR 
 - **Performance**: 360° feedback, OKR tracking, and AI proficiency analysis.
 - **Offboarding**: Interactive departure checklist, financial settlement intelligence, and dynamic fallback systems for robust execution.
 
+## 2.5 Role-Based Access Control (RBAC)
+
+The application implements a robust 3-tier Role-Based Access Control system: **Admin**, **Manager**, and **Employee**. Permissions dictate UI rendering and data access across the platform.
+
+### Access Matrix
+
+| Module | Admin | Manager | Employee |
+| :--- | :--- | :--- | :--- |
+| **Dashboard** | Full access (Company Metrics, Global Tasks) | Team Overview, Approvals queue | Personal Tasks, Self-service overview |
+| **Employees** | Full directory access, full edit rights | View direct reports/department only, edit non-financial data | View basic profiles of peers |
+| **Recruitment** | Full access (Create jobs, view all candidates, salaries) | View candidates for their roles (salaries hidden) | **NO ACCESS** |
+| **Time Off** | Approve/Reject company-wide | Approve/Reject for direct reports | Request time off, View balance |
+| **Payroll** | Process payroll, view all data | **Self-Service Only** (View own payslips) | **Self-Service Only** (View own payslips) |
+| **Assets** | Full access (Assign/Track all assets) | **Self-Service Only** (View assigned assets) | **Self-Service Only** (View assigned assets) |
+| **Onboarding / Offboarding** | Manage company-wide | Manage direct reports | View own checklists |
+| **Org Chart** | View entire structure | View entire structure | View entire structure |
+
+> [!IMPORTANT]
+> The current frontend implementation uses `userRole` from `useAuth` to enforce these rules dynamically. When implementing the backend, these checks **must** also be enforced at the API layer (Server Actions/API Routes) to ensure data security.
+
 ---
 
 ## 3. Data Model
