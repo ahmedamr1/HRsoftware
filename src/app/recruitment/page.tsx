@@ -175,8 +175,9 @@ export default function RecruitmentPage() {
                         <Button className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black shadow-lg text-[10px] font-black uppercase tracking-widest px-6" asChild>
                             <Link href="/recruitment/referrals">View Hub</Link>
                         </Button>
-                    </Card>
-                </div>
+                    </CardContent>
+                </Card>
+            </div>
             )}
 
             <Card className="bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden">
