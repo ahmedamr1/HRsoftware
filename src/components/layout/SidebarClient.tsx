@@ -50,7 +50,7 @@ export function SidebarClient() {
                 </button>
             </div>
 
-            <nav className="flex-1 px-4 space-y-2 mt-4">
+            <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto overflow-x-hidden">
                 {filteredNavigation.map((item) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
