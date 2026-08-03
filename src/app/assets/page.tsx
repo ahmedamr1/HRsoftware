@@ -292,7 +292,7 @@ export default function AssetsPage() {
                                     {asset.employee ? (
                                         <div className="flex items-center gap-2">
                                             <Avatar className="h-6 w-6">
-                                                <AvatarImage src={asset.employee.avatar} />
+                                                <AvatarImage src={asset.employee.avatar || undefined} />
                                                 <AvatarFallback className="text-[10px] bg-zinc-100">{asset.employee.firstName[0]}{asset.employee.lastName[0]}</AvatarFallback>
                                             </Avatar>
                                             <span className="text-sm font-medium">{asset.employee.firstName} {asset.employee.lastName}</span>

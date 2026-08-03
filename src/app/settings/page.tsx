@@ -90,7 +90,7 @@ export default function SettingsPage() {
                                                             </div>
                                                         ) : (
                                                             <Avatar className="h-10 w-10 border-2 border-blue-500/20">
-                                                                <AvatarImage src={activeUserForPerms.avatar} />
+                                                                <AvatarImage src={activeUserForPerms.avatar || undefined} />
                                                                 <AvatarFallback className="font-bold">{activeUserForPerms.firstName[0]}</AvatarFallback>
                                                             </Avatar>
                                                         )}
@@ -319,7 +319,7 @@ export default function SettingsPage() {
                                                                 <td className="p-4">
                                                                     <div className="flex items-center gap-3">
                                                                         <Avatar className="h-8 w-8">
-                                                                            <AvatarImage src={employee.avatar} />
+                                                                            <AvatarImage src={employee.avatar || undefined} />
                                                                             <AvatarFallback className="font-bold text-[10px]">{employee.firstName[0]}</AvatarFallback>
                                                                         </Avatar>
                                                                         <div>

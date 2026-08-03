@@ -208,7 +208,7 @@ export default function OffboardingPage() {
                                         <CardHeader>
                                             <div className="flex items-center gap-4">
                                                 <Avatar className="h-16 w-16 border-4 border-white dark:border-zinc-800 shadow-xl">
-                                                    <AvatarImage src={selectedRecord.employee.avatar} />
+                                                    <AvatarImage src={selectedRecord.employee.avatar || undefined} />
                                                     <AvatarFallback>{selectedRecord.employee.firstName[0]}</AvatarFallback>
                                                 </Avatar>
                                                 <div>
@@ -341,7 +341,7 @@ export default function OffboardingPage() {
                                                         <TableCell>
                                                             <div className="flex items-center gap-3">
                                                                 <Avatar className="h-8 w-8">
-                                                                    <AvatarImage src={item.employee.avatar} />
+                                                                    <AvatarImage src={item.employee.avatar || undefined} />
                                                                     <AvatarFallback>{item.employee.firstName[0]}</AvatarFallback>
                                                                 </Avatar>
                                                                 <div>

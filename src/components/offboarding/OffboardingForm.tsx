@@ -163,7 +163,7 @@ export function OffboardingForm({ isOpen, onClose, onSuccess, employee: initialE
                                         onClick={() => setSelectedEmployee(emp)}
                                     >
                                         <Avatar className="h-8 w-8">
-                                            <AvatarImage src={emp.avatar} />
+                                            <AvatarImage src={emp.avatar || undefined} />
                                             <AvatarFallback>{emp.firstName[0]}</AvatarFallback>
                                         </Avatar>
                                         <div>
@@ -178,7 +178,7 @@ export function OffboardingForm({ isOpen, onClose, onSuccess, employee: initialE
                         <div className="flex items-center justify-between p-4 bg-rose-50/50 dark:bg-rose-900/10 rounded-2xl border border-rose-100 dark:border-rose-900/30">
                             <div className="flex items-center gap-4">
                                 <Avatar className="h-12 w-12 border-2 border-white dark:border-zinc-800 shadow-sm">
-                                    <AvatarImage src={selectedEmployee.avatar} />
+                                    <AvatarImage src={selectedEmployee.avatar || undefined} />
                                     <AvatarFallback>{selectedEmployee.firstName[0]}</AvatarFallback>
                                 </Avatar>
                                 <div>

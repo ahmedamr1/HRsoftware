@@ -205,7 +205,7 @@ function EmployeesContent() {
                                     <TableRow key={employee.id} className="group hover:bg-blue-50/30 dark:hover:bg-blue-900/10 border-zinc-200 dark:border-zinc-800 transition-colors cursor-pointer" onClick={() => router.push(`/employees/${employee.id}`)}>
                                         <TableCell>
                                             <Avatar className="h-10 w-10 border-2 border-white dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
-                                                <AvatarImage src={employee.avatar} alt={employee.firstName} />
+                                                <AvatarImage src={employee.avatar || undefined} alt={employee.firstName} />
                                                 <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-bold">
                                                     {employee.firstName[0]}{employee.lastName[0]}
                                                 </AvatarFallback>
@@ -347,7 +347,7 @@ function EmployeesContent() {
                                                 <div className="flex items-center gap-6">
                                                     <div className="relative">
                                                         <Avatar className="h-20 w-20 border-4 border-white dark:border-zinc-800 shadow-xl group-hover:scale-110 transition-transform duration-500">
-                                                            <AvatarImage src={emp.avatar} alt={emp.firstName} />
+                                                            <AvatarImage src={emp.avatar || undefined} alt={emp.firstName} />
                                                             <AvatarFallback className="bg-zinc-100 text-zinc-600 font-black text-xl">
                                                                 {emp.firstName[0]}{emp.lastName[0]}
                                                             </AvatarFallback>

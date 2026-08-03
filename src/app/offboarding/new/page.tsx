@@ -206,7 +206,7 @@ export default function NewOffboardingPage() {
                                             onClick={() => setSelectedEmployee(emp)}
                                         >
                                             <Avatar className="h-10 w-10 border-2 border-white dark:border-zinc-800">
-                                                <AvatarImage src={emp.avatar} />
+                                                <AvatarImage src={emp.avatar || undefined} />
                                                 <AvatarFallback>{emp.firstName[0]}</AvatarFallback>
                                             </Avatar>
                                             <div className="flex-1 overflow-hidden">

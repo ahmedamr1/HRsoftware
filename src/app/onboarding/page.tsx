@@ -240,7 +240,7 @@ export default function OnboardingPage() {
                                                 <TableCell>
                                                     <div className="flex items-center gap-3">
                                                         <Avatar className="h-8 w-8">
-                                                            <AvatarImage src={item.employee.avatar} />
+                                                            <AvatarImage src={item.employee.avatar || undefined} />
                                                             <AvatarFallback>{item.employee.firstName[0]}</AvatarFallback>
                                                         </Avatar>
                                                         <div>

@@ -318,7 +318,7 @@ export default function EmployeeProfilePage() {
             {/* Hero Section */}
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
                 <Avatar className="h-24 w-24 border-4 border-zinc-50 dark:border-zinc-900 shadow-xl">
-                    <AvatarImage src={employee.avatar} alt={employee.firstName} />
+                    <AvatarImage src={employee.avatar || undefined} alt={employee.firstName} />
                     <AvatarFallback className="bg-blue-100 text-blue-700 text-3xl font-black">
                         {employee.firstName[0]}{employee.lastName[0]}
                     </AvatarFallback>
@@ -690,7 +690,7 @@ export default function EmployeeProfilePage() {
                                     ) : (
                                         <div className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-900/50 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50">
                                             <Avatar className="h-10 w-10 border-2 border-white dark:border-zinc-950 shadow-sm">
-                                                <AvatarImage src={employees.find(e => e.id === directManager)?.avatar} />
+                                                <AvatarImage src={employees.find(e => e.id === directManager)?.avatar || undefined} />
                                                 <AvatarFallback className="bg-indigo-100 text-indigo-700 text-xs font-bold">
                                                     {employees.find(e => e.id === directManager)?.firstName?.[0] || '?'}{employees.find(e => e.id === directManager)?.lastName?.[0] || '?'}
                                                 </AvatarFallback>
@@ -721,7 +721,7 @@ export default function EmployeeProfilePage() {
                                     ) : (
                                         <div className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-900/50 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50">
                                             <Avatar className="h-10 w-10 border-2 border-white dark:border-zinc-950 shadow-sm">
-                                                <AvatarImage src={employees.find(e => e.id === indirectManager)?.avatar} />
+                                                <AvatarImage src={employees.find(e => e.id === indirectManager)?.avatar || undefined} />
                                                 <AvatarFallback className="bg-zinc-200 text-zinc-700 text-xs font-bold">
                                                     {employees.find(e => e.id === indirectManager)?.firstName?.[0] || '?'}{employees.find(e => e.id === indirectManager)?.lastName?.[0] || '?'}
                                                 </AvatarFallback>
