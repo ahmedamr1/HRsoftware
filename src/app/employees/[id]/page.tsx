@@ -19,6 +19,7 @@ import {
     ShieldCheck, Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
