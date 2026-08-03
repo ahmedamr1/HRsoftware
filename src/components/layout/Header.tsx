@@ -33,18 +33,20 @@ export function Header() {
         }
     }, [isAdmin]);
 
-    const filteredEmployees = employees.filter(e => {
-        const fullName = `${e.firstName} ${e.lastName}`;
-        return (fullName || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
-               (e.role || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-               (e.department || "").toLowerCase().includes(searchQuery.toLowerCase());
-    }).slice(0, 5);
+    const searchValues = (obj: any, query: string): boolean => {
+        if (!query) return false;
+        const q = query.toLowerCase();
+        for (const key in obj) {
+            const val = obj[key];
+            if (typeof val === 'string' && val.toLowerCase().includes(q)) return true;
+            if (typeof val === 'number' && val.toString().includes(q)) return true;
+            if (Array.isArray(val) && val.some(v => typeof v === 'string' && v.toLowerCase().includes(q))) return true;
+        }
+        return false;
+    };
 
-    const filteredAssets = globalAssets.filter(a => 
-        (a.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (a.category || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (a.serialNumber || "").toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 5);
+    const filteredEmployees = employees.filter(e => searchValues(e, searchQuery));
+    const filteredAssets = globalAssets.filter(a => searchValues(a, searchQuery));
     
     // Simulate finding the current employee if role is employee
     // In a real app, this would come from the auth context
