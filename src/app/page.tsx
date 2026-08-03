@@ -53,15 +53,15 @@ export default function Dashboard() {
   const currentUser = employees.find(e => e.id === currentUserId);
 
   const filteredEmployees = employees.filter(e => 
-    e.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    e.role?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    e.department?.toLowerCase().includes(searchQuery.toLowerCase())
+    (e.name || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
+    (e.role || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (e.department || "").toLowerCase().includes(searchQuery.toLowerCase())
   ).slice(0, 5);
 
   const filteredAssets = globalAssets.filter(a => 
-    a.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    a.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    a.serialNumber?.toLowerCase().includes(searchQuery.toLowerCase())
+    (a.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (a.category || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (a.serialNumber || "").toLowerCase().includes(searchQuery.toLowerCase())
   ).slice(0, 5);
 
   const adminStats = [
