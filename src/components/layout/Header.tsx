@@ -45,6 +45,27 @@ export function Header() {
         return false;
     };
 
+    const systemPages = [
+        { label: "Dashboard", href: "/", type: "Page" },
+        { label: "Profile", href: "/profile", type: "Page" },
+        { label: "Employees Directory", href: "/employees", type: "Page" },
+        { label: "Recruitment", href: "/recruitment", type: "Page" },
+        { label: "Payroll", href: "/payroll", type: "Page" },
+        { label: "Performance", href: "/performance", type: "Page" },
+        { label: "Culture & Pulse", href: "/culture", type: "Page" },
+        { label: "Onboarding", href: "/onboarding", type: "Page" },
+        { label: "Offboarding", href: "/offboarding", type: "Page" },
+        { label: "Assets Management", href: "/assets", type: "Page" },
+        { label: "Organization Chart", href: "/org-chart", type: "Page" },
+        { label: "Add New Hire", href: "/recruitment/new", type: "Action" },
+        { label: "Sign Out", href: "/login", type: "Action" }
+    ];
+
+    const filteredPages = systemPages.filter(p => 
+        p.label.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        p.type.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const filteredEmployees = employees.filter(e => searchValues(e, searchQuery));
     const filteredAssets = globalAssets.filter(a => searchValues(a, searchQuery));
     
@@ -91,6 +112,26 @@ export function Header() {
                                     className="absolute top-full left-0 mt-2 w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl overflow-hidden flex flex-col z-50"
                                 >
                                     <div className="p-2 overflow-y-auto max-h-[300px]">
+                                        {filteredPages.length > 0 && (
+                                            <div className="mb-2">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 px-2 mb-1">System Navigation</p>
+                                                {filteredPages.map(page => (
+                                                    <div 
+                                                        key={page.href} 
+                                                        onClick={() => router.push(page.href)}
+                                                        className="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer transition-colors"
+                                                    >
+                                                        <div className="h-8 w-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                                                            <ExternalLink size={14} />
+                                                        </div>
+                                                        <div className="overflow-hidden">
+                                                            <p className="text-sm font-bold text-black dark:text-zinc-50 truncate">{page.label}</p>
+                                                            <p className="text-[10px] text-zinc-500 truncate">{page.type} Route</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                         {filteredEmployees.length > 0 && (
                                             <div className="mb-2">
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 px-2 mb-1">Employees</p>
@@ -133,7 +174,7 @@ export function Header() {
                                             </div>
                                         )}
 
-                                        {filteredEmployees.length === 0 && filteredAssets.length === 0 && (
+                                        {filteredPages.length === 0 && filteredEmployees.length === 0 && filteredAssets.length === 0 && (
                                             <div className="p-4 text-center">
                                                 <p className="text-xs text-zinc-500">No results found for "{searchQuery}"</p>
                                             </div>
