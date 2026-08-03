@@ -262,7 +262,11 @@ export function Header() {
                                 <div className="flex items-center gap-2">
                                     <Link href="/profile" className={`h-8 w-8 rounded-full bg-gradient-to-tr ${userRole === 'admin' ? 'from-blue-500 to-indigo-600' : 'from-emerald-500 to-teal-600'} p-[2px] cursor-pointer hover:scale-110 transition-transform group relative block`}>
                                         <div className="h-full w-full rounded-full bg-white dark:bg-zinc-900 border-2 border-white dark:border-black overflow-hidden flex items-center justify-center font-black text-[10px] text-zinc-600 dark:text-zinc-400">
-                                            {userRole === 'admin' ? 'AD' : 'EM'}
+                                            {currentEmployee?.avatar ? (
+                                                <img src={currentEmployee.avatar} alt="Profile" className="h-full w-full object-cover" />
+                                            ) : (
+                                                userRole === 'admin' ? 'AD' : 'EM'
+                                            )}
                                         </div>
                                         <Button
                                             variant="ghost"
