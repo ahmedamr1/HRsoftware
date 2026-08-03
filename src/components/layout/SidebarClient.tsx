@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 const navigation = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["admin", "manager", "employee"] },
     { name: "Profile", href: "/profile", icon: User, roles: ["admin", "manager", "employee"] },
+    { name: "Time Off", href: "/time-off", icon: Calendar, roles: ["admin", "manager", "employee"] },
     { name: "Employees", href: "/employees", icon: Users, roles: ["admin", "manager"] },
     { name: "Recruitment", href: "/recruitment", icon: Briefcase, roles: ["admin", "manager"] },
     { name: "Payroll", href: "/payroll", icon: CreditCard, roles: ["admin", "manager", "employee"] },
@@ -19,7 +20,6 @@ const navigation = [
     { name: "Offboarding", href: "/offboarding", icon: LogOut, roles: ["admin", "manager", "employee"] },
     { name: "Assets", href: "/assets", icon: Briefcase, roles: ["admin"] },
     { name: "Org Chart", href: "/org-chart", icon: Network, roles: ["admin", "manager", "employee"] },
-    { name: "Time Off", href: "/time-off", icon: Calendar, roles: ["admin", "manager", "employee"] },
     { name: "Settings", href: "/settings", icon: Settings, roles: ["admin", "manager", "employee"] },
 ];
 

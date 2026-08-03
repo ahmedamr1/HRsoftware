@@ -48,6 +48,7 @@ export function Header() {
     const systemPages = [
         { label: "Dashboard", href: "/", type: "Page" },
         { label: "Profile", href: "/profile", type: "Page" },
+        { label: "Time Off", href: "/time-off", type: "Page" },
         { label: "Employees", href: "/employees", type: "Page" },
         { label: "Recruitment", href: "/recruitment", type: "Page" },
         { label: "Payroll", href: "/payroll", type: "Page" },
@@ -57,7 +58,6 @@ export function Header() {
         { label: "Offboarding", href: "/offboarding", type: "Page" },
         { label: "Assets", href: "/assets", type: "Page" },
         { label: "Org Chart", href: "/org-chart", type: "Page" },
-        { label: "Time Off", href: "/time-off", type: "Page" },
         { label: "Settings", href: "/settings", type: "Page" }
     ];
 
