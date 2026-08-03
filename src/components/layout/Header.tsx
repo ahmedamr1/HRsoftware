@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Search, Command, Sparkles, LogOut, User, FileWarning, Calendar, ArrowRight, ExternalLink, Laptop } from "lucide-react";
+import { Bell, Search, Command, Sparkles, LogOut, User, FileWarning, Calendar, ArrowRight, ExternalLink, Laptop, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
