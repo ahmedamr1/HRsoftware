@@ -27,7 +27,10 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, serialNumber, category, employeeId, status } = body;
+        const { name, serialNumber, category, employeeId, status, assignedAt } = body;
+        
+        // Lookup employee for mock response
+        const emp = employeeId ? employees.find(e => e.id === employeeId) : null;
         
         // Mock creation
         const newAsset = {
@@ -36,12 +39,12 @@ export async function POST(req: Request) {
             serialNumber,
             category,
             status: status || "In Inventory",
-            assignedAt: employeeId ? new Date().toISOString() : null,
-            employee: employeeId ? {
-                id: employeeId,
-                firstName: "Mock",
-                lastName: "User",
-                avatar: ""
+            assignedAt: employeeId ? (assignedAt ? new Date(assignedAt).toISOString() : new Date().toISOString()) : null,
+            employee: emp ? {
+                id: emp.id,
+                firstName: emp.firstName,
+                lastName: emp.lastName,
+                avatar: emp.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${emp.firstName}`
             } : null
         };
 

@@ -19,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { employees } from "@/app/employees/data";
 
 export default function AssetsPage() {
     const { userRole } = useAuth();
@@ -29,7 +30,7 @@ export default function AssetsPage() {
     const [loading, setLoading] = useState(true);
 
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-    const [newAsset, setNewAsset] = useState({ name: "", category: "Laptop", serialNumber: "" });
+    const [newAsset, setNewAsset] = useState({ name: "", category: "Laptop", serialNumber: "", employeeId: "", assignedAt: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
@@ -63,17 +64,18 @@ export default function AssetsPage() {
 
         setIsSubmitting(true);
         try {
+            const status = newAsset.employeeId ? "Assigned" : "In Inventory";
             const res = await fetch('/api/assets', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...newAsset, status: "In Inventory" })
+                body: JSON.stringify({ ...newAsset, status })
             });
 
             if (res.ok) {
                 const createdAsset = await res.json();
                 setAssets([createdAsset, ...assets]);
                 setIsRegisterOpen(false);
-                setNewAsset({ name: "", category: "Laptop", serialNumber: "" });
+                setNewAsset({ name: "", category: "Laptop", serialNumber: "", employeeId: "", assignedAt: "" });
                 toast.success("Asset registered successfully");
             } else {
                 toast.error("Failed to register asset");
@@ -160,6 +162,32 @@ export default function AssetsPage() {
                                             className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800"
                                         />
                                     </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="employee" className="text-xs font-bold uppercase tracking-widest text-zinc-500">Assigned To (Optional)</Label>
+                                        <select
+                                            id="employee"
+                                            value={newAsset.employeeId}
+                                            onChange={(e) => setNewAsset({ ...newAsset, employeeId: e.target.value })}
+                                            className="w-full h-10 px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="">Unassigned</option>
+                                            {employees.map(emp => (
+                                                <option key={emp.id} value={emp.id}>{emp.firstName} {emp.lastName}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {newAsset.employeeId && (
+                                        <div className="space-y-2">
+                                            <Label htmlFor="dateAssigned" className="text-xs font-bold uppercase tracking-widest text-zinc-500">Date Assigned</Label>
+                                            <Input
+                                                id="dateAssigned"
+                                                type="date"
+                                                value={newAsset.assignedAt}
+                                                onChange={(e) => setNewAsset({ ...newAsset, assignedAt: e.target.value })}
+                                                className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800"
+                                            />
+                                        </div>
+                                    )}
                                     <DialogFooter className="mt-6">
                                         <Button type="button" variant="outline" onClick={() => setIsRegisterOpen(false)}>Cancel</Button>
                                         <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
