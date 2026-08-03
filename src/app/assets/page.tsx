@@ -12,12 +12,13 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 export default function AssetsPage() {
     const { userRole } = useAuth();
@@ -26,6 +27,10 @@ export default function AssetsPage() {
 
     const [assets, setAssets] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const [newAsset, setNewAsset] = useState({ name: "", category: "Laptop", serialNumber: "" });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchAssets();
@@ -46,6 +51,37 @@ export default function AssetsPage() {
             console.error("Failed to fetch assets:", err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleRegisterAsset = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newAsset.name || !newAsset.serialNumber) {
+            toast.error("Please fill in all required fields");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const res = await fetch('/api/assets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...newAsset, status: "In Inventory" })
+            });
+
+            if (res.ok) {
+                const createdAsset = await res.json();
+                setAssets([createdAsset, ...assets]);
+                setIsRegisterOpen(false);
+                setNewAsset({ name: "", category: "Laptop", serialNumber: "" });
+                toast.success("Asset registered successfully");
+            } else {
+                toast.error("Failed to register asset");
+            }
+        } catch (err) {
+            toast.error("An error occurred while registering the asset");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -80,9 +116,60 @@ export default function AssetsPage() {
                         <Filter size={14} className="mr-2" /> Filter
                     </Button>
                     {isAdmin && (
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
-                            <Plus size={14} className="mr-2" /> Register Asset
-                        </Button>
+                        <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
+                            <DialogTrigger asChild>
+                                <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
+                                    <Plus size={14} className="mr-2" /> Register Asset
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800">
+                                <DialogHeader>
+                                    <DialogTitle className="text-xl font-black tracking-tighter">Register New Asset</DialogTitle>
+                                </DialogHeader>
+                                <form onSubmit={handleRegisterAsset} className="space-y-4 mt-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-zinc-500">Asset Name</Label>
+                                        <Input
+                                            id="name"
+                                            placeholder="e.g. MacBook Pro 16"
+                                            value={newAsset.name}
+                                            onChange={(e) => setNewAsset({ ...newAsset, name: e.target.value })}
+                                            className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="category" className="text-xs font-bold uppercase tracking-widest text-zinc-500">Category</Label>
+                                        <select
+                                            id="category"
+                                            value={newAsset.category}
+                                            onChange={(e) => setNewAsset({ ...newAsset, category: e.target.value })}
+                                            className="w-full h-10 px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="Laptop">Laptop</option>
+                                            <option value="Phone">Phone</option>
+                                            <option value="Keys">Keys</option>
+                                            <option value="Badge">Badge</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="serial" className="text-xs font-bold uppercase tracking-widest text-zinc-500">Serial Number</Label>
+                                        <Input
+                                            id="serial"
+                                            placeholder="e.g. MWP22LL/A"
+                                            value={newAsset.serialNumber}
+                                            onChange={(e) => setNewAsset({ ...newAsset, serialNumber: e.target.value })}
+                                            className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800"
+                                        />
+                                    </div>
+                                    <DialogFooter className="mt-6">
+                                        <Button type="button" variant="outline" onClick={() => setIsRegisterOpen(false)}>Cancel</Button>
+                                        <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
+                                            {isSubmitting ? "Registering..." : "Register Asset"}
+                                        </Button>
+                                    </DialogFooter>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
                     )}
                 </div>
             </div>
