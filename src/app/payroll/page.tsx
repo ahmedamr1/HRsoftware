@@ -127,7 +127,7 @@ export default function PayrollPage() {
 
             <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
                 <div>
-                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Finances & Payroll</h2>
+                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Payroll</h2>
                     <p className="text-zinc-500 dark:text-zinc-400">
                         {isAdmin ? "Manage salary distribution and employee compensation." : "Your personal compensation and payslip history."}
                     </p>

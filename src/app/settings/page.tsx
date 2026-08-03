@@ -46,7 +46,7 @@ export default function SettingsPage() {
     return (
         <div className="space-y-6 text-left max-w-5xl">
             <div>
-                <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">System Configuration</h2>
+                <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Settings</h2>
                 <p className="text-zinc-500 dark:text-zinc-400">Manage your account settings and organization preferences.</p>
             </div>
 

@@ -324,7 +324,7 @@ export default function CulturePulsePage() {
                         </div>
                         <Badge className="bg-white/20 text-white border-none font-bold">Q2 LIVE PULSE</Badge>
                     </div>
-                    <h1 className="text-4xl font-black tracking-tight mb-2">Culture & Environment</h1>
+                    <h1 className="text-4xl font-black tracking-tight mb-2">Culture & Pulse</h1>
                     <p className="text-indigo-100 max-w-xl font-medium">
                         Real-time intelligence on your organization's health, happiness, and engagement levels.
                     </p>

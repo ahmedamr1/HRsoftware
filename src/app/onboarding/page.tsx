@@ -74,7 +74,7 @@ export default function OnboardingPage() {
         <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Onboarding Intelligence</h2>
+                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Onboarding</h2>
                     <p className="text-zinc-500 dark:text-zinc-400">Next-gen transition experience for new talent.</p>
                 </div>
                 {isAdmin && (

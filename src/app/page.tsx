@@ -65,7 +65,7 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">
-              {isAdmin ? "Operational Hub" : "Personal Workspace"}
+              Dashboard
             </h2>
             <Badge className="bg-blue-600 text-white border-none text-[10px] font-black uppercase tracking-widest px-2 py-0.5">AI Native</Badge>
           </div>

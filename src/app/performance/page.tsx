@@ -64,7 +64,7 @@ export default function PerformancePage() {
             />
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Performance Intelligence</h2>
+                    <h2 className="text-3xl font-black tracking-tighter text-black dark:text-zinc-50">Performance</h2>
                     <p className="text-zinc-500 dark:text-zinc-400">AI-driven growth tracking and strategic talent alignment.</p>
                 </div>
                 <div className="flex gap-3">
