@@ -48,17 +48,17 @@ export function Header() {
     const systemPages = [
         { label: "Dashboard", href: "/", type: "Page" },
         { label: "Profile", href: "/profile", type: "Page" },
-        { label: "Employees Directory", href: "/employees", type: "Page" },
+        { label: "Employees", href: "/employees", type: "Page" },
         { label: "Recruitment", href: "/recruitment", type: "Page" },
         { label: "Payroll", href: "/payroll", type: "Page" },
         { label: "Performance", href: "/performance", type: "Page" },
         { label: "Culture & Pulse", href: "/culture", type: "Page" },
         { label: "Onboarding", href: "/onboarding", type: "Page" },
         { label: "Offboarding", href: "/offboarding", type: "Page" },
-        { label: "Assets Management", href: "/assets", type: "Page" },
-        { label: "Organization Chart", href: "/org-chart", type: "Page" },
-        { label: "Add New Hire", href: "/recruitment/new", type: "Action" },
-        { label: "Sign Out", href: "/login", type: "Action" }
+        { label: "Assets", href: "/assets", type: "Page" },
+        { label: "Org Chart", href: "/org-chart", type: "Page" },
+        { label: "Time Off", href: "/time-off", type: "Page" },
+        { label: "Settings", href: "/settings", type: "Page" }
     ];
 
     const filteredPages = systemPages.filter(p => 
