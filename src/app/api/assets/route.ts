@@ -1,76 +1,27 @@
 import { NextResponse } from "next/server";
+import { employees } from "@/app/employees/data";
 
-const MOCK_ASSETS = [
-    {
-        id: "ast_1",
-        name: "MacBook Pro 16\"",
+const generateMockAssets = () => {
+    return employees.map((emp) => ({
+        id: `ast_${emp.id}`,
+        name: "Laptop",
         brand: "Apple",
         category: "Laptop",
-        serialNumber: "MWP22LL/A",
+        serialNumber: `MWP22LL/A-${emp.id}`,
         status: "Assigned",
-        assignedAt: "2023-01-15T00:00:00Z",
+        notes: "Space Gray, 16GB RAM",
+        assignedAt: emp.joinedDate ? new Date(emp.joinedDate).toISOString() : "2023-01-01T00:00:00Z",
         employee: {
-            id: "2",
-            firstName: "Sarah",
-            lastName: "Jenkins",
-            avatar: "https://i.pravatar.cc/150?u=sarah"
+            id: emp.id,
+            firstName: emp.firstName,
+            lastName: emp.lastName,
+            avatar: emp.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${emp.firstName}`
         }
-    },
-    {
-        id: "ast_2",
-        name: "Dell XPS 15",
-        brand: "Dell",
-        category: "Laptop",
-        serialNumber: "DXPS15-2023-A1",
-        status: "Assigned",
-        assignedAt: "2024-03-10T00:00:00Z",
-        employee: {
-            id: "4",
-            firstName: "Emily",
-            lastName: "Chen",
-            avatar: "https://i.pravatar.cc/150?u=emily"
-        }
-    },
-    {
-        id: "ast_3",
-        name: "Office Keys",
-        brand: "Generic",
-        category: "Keys",
-        serialNumber: "KEY-001",
-        status: "In Inventory",
-        assignedAt: null,
-        employee: null
-    },
-    {
-        id: "ast_4",
-        name: "iPhone 14 Pro",
-        brand: "Apple",
-        category: "Phone",
-        serialNumber: "IP14P-9921",
-        status: "Assigned",
-        assignedAt: "2023-11-05T00:00:00Z",
-        employee: {
-            id: "1",
-            firstName: "Admin",
-            lastName: "User",
-            avatar: "https://i.pravatar.cc/150?u=admin"
-        }
-    },
-    {
-        id: "ast_5",
-        name: "Building Access Badge",
-        brand: "HID",
-        category: "Badge",
-        serialNumber: "BDG-88219",
-        status: "Damaged",
-        assignedAt: null,
-        employee: null
-    }
-];
+    }));
+};
 
 export async function GET() {
-    // Return mock data instead of Prisma to avoid 500 errors when DB is not connected
-    return NextResponse.json(MOCK_ASSETS);
+    return NextResponse.json(generateMockAssets());
 }
 
 export async function POST(req: Request) {
