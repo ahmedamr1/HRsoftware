@@ -1016,7 +1016,7 @@ export default function EmployeeProfilePage() {
                                                     <Laptop size={20} />
                                                 </div>
                                                 <div>
-                                                    <p className="font-bold text-sm text-black dark:text-zinc-50">{asset.brand} {asset.type}</p>
+                                                    <p className="font-bold text-sm text-black dark:text-zinc-50">{asset.name || asset.brand} {asset.category || asset.type}</p>
                                                     <p className="text-xs text-zinc-500">S/N: {asset.serialNumber}</p>
                                                     {asset.notes && (
                                                         <p className="text-[10px] text-zinc-400 mt-1 italic border-l-2 border-zinc-200 dark:border-zinc-800 pl-2">
