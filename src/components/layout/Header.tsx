@@ -14,6 +14,7 @@ import Link from "next/link";
 import { employees } from "@/app/employees/data";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 export function Header() {
     const { userRole, logout } = useAuth();
@@ -59,6 +60,12 @@ export function Header() {
         { label: "Assets", href: "/assets", type: "Page" },
         { label: "Org Chart", href: "/org-chart", type: "Page" },
         { label: "Settings", href: "/settings", type: "Page" }
+    ];
+
+    const notifications = [
+        { id: 1, title: "System Update: Omni-Search", desc: "Global advanced search is now live. Try searching for any route or data.", time: "10m ago", icon: Sparkles, color: "text-blue-500", bg: "bg-blue-500/10" },
+        { id: 2, title: "Q3 Pulse Survey", desc: "The new quarterly culture pulse survey is ready to take.", time: "2h ago", icon: Heart, color: "text-rose-500", bg: "bg-rose-500/10" },
+        { id: 3, title: "Policy Update", desc: "Remote work guidelines have been updated for 2026.", time: "1d ago", icon: FileWarning, color: "text-amber-500", bg: "bg-amber-500/10" }
     ];
 
     const filteredPages = systemPages.filter(p => 
@@ -206,15 +213,45 @@ export function Header() {
                 </div>
                 <div className="flex items-center gap-3">
                     <ModeToggle />
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="relative text-zinc-500 hover:text-blue-600 transition-colors"
-                        onClick={() => toast.info("No new notifications")}
-                    >
-                        <Bell size={18} />
-                        <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-red-500 border border-white dark:border-black" />
-                    </Button>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="relative text-zinc-500 hover:text-blue-600 transition-colors focus-visible:ring-0 focus-visible:ring-offset-0"
+                            >
+                                <Bell size={18} />
+                                <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-red-500 border border-white dark:border-black" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent align="end" className="w-80 p-0 border-zinc-200 dark:border-zinc-800 shadow-2xl rounded-xl">
+                            <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                                <h4 className="font-black tracking-tighter text-sm">Notifications</h4>
+                                <Badge className="bg-blue-500/10 text-blue-600 border-none font-bold text-[10px]">3 New</Badge>
+                            </div>
+                            <div className="max-h-[300px] overflow-y-auto">
+                                {notifications.map(notif => (
+                                    <div key={notif.id} className="p-4 border-b border-zinc-50 dark:border-zinc-900 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer flex gap-4 items-start">
+                                        <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${notif.bg} ${notif.color}`}>
+                                            <notif.icon size={14} />
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center justify-between mb-1">
+                                                <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{notif.title}</p>
+                                                <span className="text-[10px] font-bold text-zinc-400 whitespace-nowrap ml-2">{notif.time}</span>
+                                            </div>
+                                            <p className="text-[10px] text-zinc-500 leading-relaxed">{notif.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="p-2 border-t border-zinc-100 dark:border-zinc-800">
+                                <Button variant="ghost" className="w-full text-xs font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
+                                    Mark all as read
+                                </Button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                     <div className="flex items-center gap-3 pl-3 border-l border-zinc-200 dark:border-zinc-800">
                         {userRole ? (
                             <div className="flex items-center gap-3">
