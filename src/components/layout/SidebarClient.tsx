@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, Calendar, Settings, LogOut, Briefcase, CreditCard, BarChart3, ClipboardList, Network, User, Heart } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, Settings, LogOut, Briefcase, CreditCard, BarChart3, ClipboardList, Network, User, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
-import { toast } from "sonner";
 
 const navigation = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard, roles: ["admin", "manager", "employee"] },
@@ -27,6 +26,7 @@ const navigation = [
 export function SidebarClient() {
     const pathname = usePathname();
     const { userRole, logout } = useAuth();
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const currentRole = userRole || "admin";
 
@@ -35,14 +35,22 @@ export function SidebarClient() {
     const SignOutWrapper = React.Fragment;
 
     return (
-        <div className="flex flex-col h-screen w-64 bg-zinc-950 text-white border-r border-zinc-800">
-            <div className="p-6">
-                <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                    <span className="text-blue-500">Super</span>HR
-                </h1>
+        <div className={cn("flex flex-col h-screen bg-zinc-950 text-white border-r border-zinc-800 transition-all duration-300", isCollapsed ? "w-20" : "w-64")}>
+            <div className={cn("p-6 flex items-center", isCollapsed ? "justify-center" : "justify-between")}>
+                {!isCollapsed && (
+                    <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <span className="text-blue-500">Super</span>HR
+                    </h1>
+                )}
+                <button 
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="text-zinc-400 hover:text-white transition-colors"
+                >
+                    {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </button>
             </div>
 
-            <nav className="flex-1 px-4 space-y-2">
+            <nav className="flex-1 px-4 space-y-2 mt-4">
                 {filteredNavigation.map((item) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
@@ -51,15 +59,17 @@ export function SidebarClient() {
                         <Link
                             key={item.name}
                             href={item.href}
+                            title={isCollapsed ? item.name : undefined}
                             className={cn(
-                                "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                                "flex items-center rounded-md transition-colors",
+                                isCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2",
                                 isActive
                                     ? "bg-zinc-800 text-white"
                                     : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
                             )}
                         >
                             <Icon size={18} />
-                            {item.name}
+                            {!isCollapsed && <span className="text-sm font-medium">{item.name}</span>}
                         </Link>
                     );
                 })}
@@ -68,11 +78,15 @@ export function SidebarClient() {
             <div className="p-4 border-t border-zinc-800">
                 <SignOutWrapper>
                     <button
-                        className="flex items-center gap-3 px-3 py-2 w-full text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                        title={isCollapsed ? "Sign Out" : undefined}
+                        className={cn(
+                            "flex items-center text-zinc-400 hover:text-white transition-colors",
+                            isCollapsed ? "justify-center w-full p-3" : "gap-3 px-3 py-2 w-full text-sm font-medium"
+                        )}
                         onClick={logout}
                     >
                         <LogOut size={18} />
-                        Sign Out
+                        {!isCollapsed && "Sign Out"}
                     </button>
                 </SignOutWrapper>
             </div>
