@@ -5,7 +5,7 @@ import { Button as UIButton } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
@@ -16,26 +16,12 @@ export default function Dashboard() {
   const { userRole, logout } = useAuth();
   const isAdmin = userRole === "admin";
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [globalAssets, setGlobalAssets] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (isAdmin) {
-      fetch('/api/assets')
-        .then(res => res.json())
-        .then(data => setGlobalAssets(data))
-        .catch(() => {});
-    }
-  }, [isAdmin]);
-
   const [tasks, setTasks] = useState([
     { id: 1, text: isAdmin ? "Approve Q1 Budget" : "Submit Expense Report", category: isAdmin ? "Finance" : "Admin", priority: "High" },
     { id: 2, text: isAdmin ? "Sign Employment Contract" : "Update Project Docs", category: isAdmin ? "Legal" : "Engineering", priority: "Medium" },
     { id: 3, text: isAdmin ? "Review Engineering Performance" : "Finalize Sprint Tasks", category: isAdmin ? "Talent" : "Development", priority: "High" },
   ]);
 
-  const [searchMode, setSearchMode] = useState<"standard" | "ai">("standard");
   const [aiAnalysisVisible, setAiAnalysisVisible] = useState(true);
   const [showSalary, setShowSalary] = useState(false);
 
@@ -51,19 +37,6 @@ export default function Dashboard() {
   const { employees } = useEmployees();
   const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : "1");
   const currentUser = employees.find(e => e.id === currentUserId);
-
-  const filteredEmployees = employees.filter(e => {
-    const fullName = `${e.firstName} ${e.lastName}`;
-    return (fullName || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
-           (e.role || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-           (e.department || "").toLowerCase().includes(searchQuery.toLowerCase());
-  }).slice(0, 5);
-
-  const filteredAssets = globalAssets.filter(a => 
-    (a.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (a.category || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (a.serialNumber || "").toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5);
 
   const adminStats = [
     { title: "Total Talent", value: "124", change: "+12%", icon: Users, color: "blue" },
@@ -103,94 +76,6 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative group flex-1 md:flex-none z-50">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2 z-10">
-              {searchMode === "ai" ? <Sparkles size={14} className="text-blue-500 animate-pulse" /> : <Search size={14} className="text-zinc-400" />}
-            </div>
-            <input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-              placeholder={searchMode === "ai" ? "Ask AI: 'When is my next leave?'" : isAdmin ? "Search employees, roles, assets..." : "Search files..."}
-              className={`pl-10 pr-20 py-2 text-xs rounded-full border transition-all w-full md:w-80 outline-none relative z-10 ${searchMode === "ai" ? 'border-blue-500/50 bg-blue-50/20 dark:bg-blue-900/10 ring-2 ring-blue-500/20' : 'border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md'}`}
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
-              <UIButton
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setSearchMode(searchMode === "standard" ? "ai" : "standard");
-                  toast.info(searchMode === "standard" ? "AI Search Mode Enabled" : "Standard Search Enabled");
-                }}
-                className={`h-7 px-2 rounded-full text-[9px] font-black uppercase tracking-tighter ${searchMode === "ai" ? 'bg-blue-600 text-white hover:bg-blue-700' : 'text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
-              >
-                {searchMode === "ai" ? "AI Mode" : "Ask AI"}
-              </UIButton>
-            </div>
-
-            {/* Global Search Autocomplete Dropdown */}
-            <AnimatePresence>
-              {isAdmin && isSearchFocused && searchQuery.length > 0 && searchMode !== "ai" && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute top-full left-0 mt-2 w-full md:w-[400px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl overflow-hidden flex flex-col"
-                >
-                  <div className="p-2 overflow-y-auto max-h-[300px]">
-                    {filteredEmployees.length > 0 && (
-                      <div className="mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 px-2 mb-1">Employees</p>
-                        {filteredEmployees.map(emp => (
-                          <div 
-                            key={emp.id} 
-                            onClick={() => router.push(`/employees/${emp.id}`)}
-                            className="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer transition-colors"
-                          >
-                            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xs shrink-0">
-                              {emp.firstName[0]}{emp.lastName[0]}
-                            </div>
-                            <div className="overflow-hidden">
-                              <p className="text-sm font-bold text-black dark:text-zinc-50 truncate">{emp.firstName} {emp.lastName}</p>
-                              <p className="text-[10px] text-zinc-500 truncate">{emp.role} • {emp.department}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    
-                    {filteredAssets.length > 0 && (
-                      <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 px-2 mb-1">Assets</p>
-                        {filteredAssets.map(asset => (
-                          <div 
-                            key={asset.id} 
-                            onClick={() => router.push(`/assets`)}
-                            className="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer transition-colors"
-                          >
-                            <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
-                              <Laptop size={14} />
-                            </div>
-                            <div className="overflow-hidden">
-                              <p className="text-sm font-bold text-black dark:text-zinc-50 truncate">{asset.name || asset.category}</p>
-                              <p className="text-[10px] text-zinc-500 truncate">S/N: {asset.serialNumber} • {asset.status}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {filteredEmployees.length === 0 && filteredAssets.length === 0 && (
-                      <div className="p-4 text-center">
-                        <p className="text-xs text-zinc-500">No results found for "{searchQuery}"</p>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
           {isAdmin && (
             <UIButton
               onClick={() => handleAction("Opening new hire portal...")}
