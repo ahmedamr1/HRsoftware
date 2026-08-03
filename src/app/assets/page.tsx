@@ -14,10 +14,9 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
 export default function AssetsPage() {
@@ -116,12 +115,11 @@ export default function AssetsPage() {
                         <Filter size={14} className="mr-2" /> Filter
                     </Button>
                     {isAdmin && (
-                        <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
-                            <DialogTrigger asChild>
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
-                                    <Plus size={14} className="mr-2" /> Register Asset
-                                </Button>
-                            </DialogTrigger>
+                        <>
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20" onClick={() => setIsRegisterOpen(true)}>
+                                <Plus size={14} className="mr-2" /> Register Asset
+                            </Button>
+                            <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
                             <DialogContent className="sm:max-w-[425px] bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800">
                                 <DialogHeader>
                                     <DialogTitle className="text-xl font-black tracking-tighter">Register New Asset</DialogTitle>
@@ -170,6 +168,7 @@ export default function AssetsPage() {
                                 </form>
                             </DialogContent>
                         </Dialog>
+                        </>
                     )}
                 </div>
             </div>
