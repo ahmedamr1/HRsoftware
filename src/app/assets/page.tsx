@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Laptop, Smartphone, Key, CreditCard, Search, Plus, Filter, MoreHorizontal, User, Calendar, Trash2, Edit, CheckCircle2 } from "lucide-react";
+import { Laptop, Smartphone, Key, CreditCard, Search, Plus, Filter, MoreHorizontal, User, Calendar, Trash2, Edit, CheckCircle2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
     DropdownMenu,
@@ -100,9 +100,34 @@ export default function AssetsPage() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'Assigned': return <Badge className="bg-emerald-500/10 text-emerald-600 border-none">Assigned</Badge>;
+            case 'Pending Approval': return <Badge className="bg-amber-500/10 text-amber-600 border-none">Pending Approval</Badge>;
+            case 'Rejected': return <Badge className="bg-rose-500/10 text-rose-600 border-none">Rejected</Badge>;
             case 'In Inventory': return <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 border-none">In Inventory</Badge>;
             case 'Damaged': return <Badge variant="destructive" className="bg-rose-500/10 text-rose-600 border-none">Damaged</Badge>;
             default: return <Badge variant="outline">{status}</Badge>;
+        }
+    };
+
+    const handleUpdateStatus = async (asset: any, status: string) => {
+        try {
+            const res = await fetch('/api/assets', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    id: asset.id, 
+                    status, 
+                    employeeId: status === 'Rejected' ? null : asset.employee?.id 
+                })
+            });
+            if (res.ok) {
+                const updated = await res.json();
+                setAssets(assets.map(a => a.id === asset.id ? updated : a));
+                toast.success(`Asset marked as ${status}`);
+            } else {
+                toast.error("Failed to update status");
+            }
+        } catch (err) {
+            toast.error("Failed to update status");
         }
     };
 
@@ -289,6 +314,17 @@ export default function AssetsPage() {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-zinc-200 dark:border-zinc-800">
+                                            {asset.status === 'Pending Approval' && (
+                                                <>
+                                                    <DropdownMenuItem className="gap-2 font-bold text-xs text-emerald-600 focus:bg-emerald-50 dark:focus:bg-emerald-900/20" onClick={() => handleUpdateStatus(asset, 'Assigned')}>
+                                                        <CheckCircle2 size={14} /> Approve Request
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className="gap-2 font-bold text-xs text-rose-600 focus:bg-rose-50 dark:focus:bg-rose-900/20" onClick={() => handleUpdateStatus(asset, 'Rejected')}>
+                                                        <XCircle size={14} /> Reject Request
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
+                                                </>
+                                            )}
                                             <DropdownMenuItem className="gap-2 font-bold text-xs">
                                                 <Edit size={14} /> Edit Details
                                             </DropdownMenuItem>

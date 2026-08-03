@@ -66,11 +66,27 @@ export default function EmployeeProfilePage() {
     const [newLeave, setNewLeave] = useState({ type: "Annual Vacation", startDate: "", endDate: "", days: 1 });
 
     // Assets State
-    const [employeeAssets, setEmployeeAssets] = useState([
-        { id: 1, type: "Laptop", brand: "Apple", serialNumber: "MWP22LL/A", status: "Assigned", notes: "Space Gray, 16GB RAM" }
-    ]);
+    const [employeeAssets, setEmployeeAssets] = useState<any[]>([]);
+    const [isAssetsLoading, setIsAssetsLoading] = useState(true);
     const [isAddingAsset, setIsAddingAsset] = useState(false);
-    const [newAsset, setNewAsset] = useState({ type: "", brand: "", serialNumber: "", notes: "" });
+    const [newAsset, setNewAsset] = useState({ category: "Laptop", brand: "", serialNumber: "", notes: "" });
+
+    useEffect(() => {
+        const fetchAssets = async () => {
+            try {
+                const res = await fetch('/api/assets');
+                if (res.ok) {
+                    const data = await res.json();
+                    setEmployeeAssets(data.filter((a: any) => a.employee?.id === employeeId));
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsAssetsLoading(false);
+            }
+        };
+        if (employeeId) fetchAssets();
+    }, [employeeId]);
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [editSection, setEditSection] = useState("");
@@ -207,15 +223,37 @@ export default function EmployeeProfilePage() {
         setNewLeave({ type: "Annual Vacation", startDate: "", endDate: "", days: 1 });
     };
 
-    const handleAddAsset = () => {
-        if (!newAsset.type || !newAsset.serialNumber) return;
-        setEmployeeAssets([
-            ...employeeAssets,
-            { id: Date.now(), ...newAsset, status: "Assigned" }
-        ]);
-        setIsAddingAsset(false);
-        setNewAsset({ type: "", brand: "", serialNumber: "", notes: "" });
-        toast.success("Asset added to profile successfully");
+    const handleAddAsset = async () => {
+        if (!newAsset.category || !newAsset.serialNumber) {
+            toast.error("Please fill in required fields");
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/assets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    name: newAsset.category, 
+                    category: newAsset.category,
+                    serialNumber: newAsset.serialNumber,
+                    employeeId: employeeId,
+                    status: "Pending Approval"
+                })
+            });
+
+            if (res.ok) {
+                const createdAsset = await res.json();
+                setEmployeeAssets([createdAsset, ...employeeAssets]);
+                setIsAddingAsset(false);
+                setNewAsset({ category: "Laptop", brand: "", serialNumber: "", notes: "" });
+                toast.success("Asset request submitted for approval");
+            } else {
+                toast.error("Failed to submit request");
+            }
+        } catch (err) {
+            toast.error("An error occurred");
+        }
     };
 
     const handleLifecycleAction = async (type: "onboarding" | "offboarding") => {
@@ -914,8 +952,17 @@ export default function EmployeeProfilePage() {
                                     <h4 className="font-black text-sm uppercase tracking-widest text-zinc-500">Assign New Asset</h4>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Asset Type</label>
-                                            <Input placeholder="e.g. Laptop, Phone" value={newAsset.type} onChange={(e) => setNewAsset({...newAsset, type: e.target.value})} />
+                                            <Label className="text-xs font-bold uppercase tracking-widest text-zinc-500">Category</Label>
+                                            <select
+                                                value={newAsset.category}
+                                                onChange={(e) => setNewAsset({ ...newAsset, category: e.target.value })}
+                                                className="w-full h-10 px-3 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                            >
+                                                <option value="Laptop">Laptop</option>
+                                                <option value="Phone">Phone</option>
+                                                <option value="Monitor">Monitor</option>
+                                                <option value="Other">Other</option>
+                                            </select>
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Brand</label>
@@ -931,16 +978,16 @@ export default function EmployeeProfilePage() {
                                         <Textarea placeholder="Additional details, condition, or special instructions..." value={newAsset.notes} onChange={(e) => setNewAsset({...newAsset, notes: e.target.value})} className="h-20" />
                                     </div>
                                     <div className="flex gap-2 justify-end mt-2">
-                                        <Button variant="ghost" size="sm" onClick={() => setIsAddingAsset(false)}>Cancel</Button>
-                                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleAddAsset}>Assign Asset</Button>
+                                        <Button onClick={() => setIsAddingAsset(false)} variant="ghost" size="sm">Cancel</Button>
+                                        <Button onClick={handleAddAsset} size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">Submit Request</Button>
                                     </div>
                                 </div>
                             )}
 
-                            {employeeAssets.length === 0 ? (
-                                <div className="text-center py-10 text-zinc-500 italic border-2 border-dashed border-zinc-100 dark:border-zinc-800 rounded-2xl">
-                                    No assets assigned to this employee.
-                                </div>
+                            {isAssetsLoading ? (
+                                <div className="p-8 text-center text-zinc-500">Loading assets...</div>
+                            ) : employeeAssets.length === 0 ? (
+                                <div className="p-8 text-center text-zinc-500">No assets assigned or requested.</div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {employeeAssets.map((asset) => (
@@ -959,7 +1006,13 @@ export default function EmployeeProfilePage() {
                                                     )}
                                                 </div>
                                             </div>
-                                            <Badge className="bg-emerald-500/10 text-emerald-600 border-none px-3 font-bold uppercase tracking-widest text-[9px]">
+                                            <Badge className={cn(
+                                                "border-none px-3 font-bold uppercase tracking-widest text-[9px]",
+                                                asset.status === 'Assigned' ? "bg-emerald-500/10 text-emerald-600" :
+                                                asset.status === 'Pending Approval' ? "bg-amber-500/10 text-amber-600" :
+                                                asset.status === 'Rejected' ? "bg-rose-500/10 text-rose-600" :
+                                                "bg-zinc-500/10 text-zinc-600"
+                                            )}>
                                                 {asset.status}
                                             </Badge>
                                         </div>
