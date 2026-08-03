@@ -124,6 +124,7 @@ export default function AssetsPage() {
                             <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Asset</TableHead>
                             <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Category</TableHead>
                             <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Assigned To</TableHead>
+                            <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Date Assigned</TableHead>
                             <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Serial Number</TableHead>
                             <TableHead className="font-bold text-[11px] uppercase tracking-widest text-zinc-500">Status</TableHead>
                             <TableHead className="text-right font-bold text-[11px] uppercase tracking-widest text-zinc-500">Actions</TableHead>
@@ -132,11 +133,11 @@ export default function AssetsPage() {
                     <TableBody>
                         {loading ? (
                             <TableRow>
-                                <TableCell colSpan={6} className="text-center py-10 text-zinc-500">Analyzing inventory...</TableCell>
+                                <TableCell colSpan={7} className="text-center py-10 text-zinc-500">Analyzing inventory...</TableCell>
                             </TableRow>
                         ) : assets.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={6} className="text-center py-10 text-zinc-500">No assets registered in the system.</TableCell>
+                                <TableCell colSpan={7} className="text-center py-10 text-zinc-500">No assets registered in the system.</TableCell>
                             </TableRow>
                         ) : assets.map((asset) => (
                             <TableRow key={asset.id} className="group hover:bg-blue-50/30 dark:hover:bg-blue-900/10 border-zinc-200 dark:border-zinc-800 transition-colors">
@@ -159,6 +160,9 @@ export default function AssetsPage() {
                                     ) : (
                                         <span className="text-xs text-zinc-400">---</span>
                                     )}
+                                </TableCell>
+                                <TableCell className="text-xs text-zinc-500 font-medium">
+                                    {asset.assignedAt ? new Date(asset.assignedAt).toLocaleDateString() : '---'}
                                 </TableCell>
                                 <TableCell className="text-xs font-mono text-zinc-500">{asset.serialNumber}</TableCell>
                                 <TableCell>{getStatusBadge(asset.status)}</TableCell>
