@@ -64,7 +64,7 @@ export default function AssetsPage() {
 
         setIsSubmitting(true);
         try {
-            const status = newAsset.employeeId ? "Assigned" : "In Inventory";
+            const status = newAsset.employeeId ? "Pending Approval" : "In Inventory";
             const res = await fetch('/api/assets', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

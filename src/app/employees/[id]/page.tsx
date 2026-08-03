@@ -256,6 +256,25 @@ export default function EmployeeProfilePage() {
         }
     };
 
+    const handleUpdateAssetStatus = async (assetId: string, status: string) => {
+        try {
+            const res = await fetch('/api/assets', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: assetId, status, employeeId: status === 'Rejected' ? null : employeeId })
+            });
+            if (res.ok) {
+                const updated = await res.json();
+                setEmployeeAssets(employeeAssets.map(a => a.id === assetId ? updated : a));
+                toast.success(`Asset ${status === 'Assigned' ? 'accepted' : 'rejected'}`);
+            } else {
+                toast.error("Failed to update status");
+            }
+        } catch (err) {
+            toast.error("Failed to update status");
+        }
+    };
+
     const handleLifecycleAction = async (type: "onboarding" | "offboarding") => {
         try {
             toast.promise(
@@ -1006,15 +1025,23 @@ export default function EmployeeProfilePage() {
                                                     )}
                                                 </div>
                                             </div>
-                                            <Badge className={cn(
-                                                "border-none px-3 font-bold uppercase tracking-widest text-[9px]",
-                                                asset.status === 'Assigned' ? "bg-emerald-500/10 text-emerald-600" :
-                                                asset.status === 'Pending Approval' ? "bg-amber-500/10 text-amber-600" :
-                                                asset.status === 'Rejected' ? "bg-rose-500/10 text-rose-600" :
-                                                "bg-zinc-500/10 text-zinc-600"
-                                            )}>
-                                                {asset.status}
-                                            </Badge>
+                                            <div className="flex flex-col gap-2 items-end">
+                                                <Badge className={cn(
+                                                    "border-none px-3 font-bold uppercase tracking-widest text-[9px]",
+                                                    asset.status === 'Assigned' ? "bg-emerald-500/10 text-emerald-600" :
+                                                    asset.status === 'Pending Approval' ? "bg-amber-500/10 text-amber-600" :
+                                                    asset.status === 'Rejected' ? "bg-rose-500/10 text-rose-600" :
+                                                    "bg-zinc-500/10 text-zinc-600"
+                                                )}>
+                                                    {asset.status}
+                                                </Badge>
+                                                {asset.status === 'Pending Approval' && (
+                                                    <div className="flex gap-1 mt-1">
+                                                        <Button size="sm" variant="ghost" className="h-6 px-2 text-[10px] text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" onClick={() => handleUpdateAssetStatus(asset.id, 'Assigned')}>Accept</Button>
+                                                        <Button size="sm" variant="ghost" className="h-6 px-2 text-[10px] text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-900/20" onClick={() => handleUpdateAssetStatus(asset.id, 'Rejected')}>Reject</Button>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
