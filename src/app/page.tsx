@@ -52,11 +52,12 @@ export default function Dashboard() {
   const currentUserId = userRole === 'manager' ? "2" : (userRole === 'employee' ? "4" : "1");
   const currentUser = employees.find(e => e.id === currentUserId);
 
-  const filteredEmployees = employees.filter(e => 
-    (e.name || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
-    (e.role || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (e.department || "").toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5);
+  const filteredEmployees = employees.filter(e => {
+    const fullName = `${e.firstName} ${e.lastName}`;
+    return (fullName || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
+           (e.role || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+           (e.department || "").toLowerCase().includes(searchQuery.toLowerCase());
+  }).slice(0, 5);
 
   const filteredAssets = globalAssets.filter(a => 
     (a.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -148,10 +149,10 @@ export default function Dashboard() {
                             className="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer transition-colors"
                           >
                             <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xs shrink-0">
-                              {emp.name.split(' ').map((n: string) => n[0]).join('')}
+                              {emp.firstName[0]}{emp.lastName[0]}
                             </div>
                             <div className="overflow-hidden">
-                              <p className="text-sm font-bold text-black dark:text-zinc-50 truncate">{emp.name}</p>
+                              <p className="text-sm font-bold text-black dark:text-zinc-50 truncate">{emp.firstName} {emp.lastName}</p>
                               <p className="text-[10px] text-zinc-500 truncate">{emp.role} • {emp.department}</p>
                             </div>
                           </div>
