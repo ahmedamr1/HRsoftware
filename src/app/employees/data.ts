@@ -102,6 +102,7 @@ export const employees: Employee[] = [
         firstName: "Ahmed",
         lastName: "Amr",
         email: "ahmed.amr@superhr.com",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ahmed",
         role: "Senior Software Engineer",
         department: "Engineering",
         status: "Active",
