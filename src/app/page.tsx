@@ -422,8 +422,40 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Column 2 & 3: Velocity */}
-        <Card className="lg:col-span-2 bg-zinc-950 dark:bg-white text-white dark:text-black shadow-2xl overflow-hidden group h-full flex flex-col justify-between">
+        {/* Column 2 (Admin Only): Global Activity */}
+        {isAdmin && (
+          <Card className="bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xl border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden h-full">
+            <CardHeader className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-sm font-black uppercase tracking-tighter text-black dark:text-zinc-50">Global Activity</CardTitle>
+                <CardDescription className="text-[10px]">Latest user actions.</CardDescription>
+              </div>
+              <Activity size={14} className="text-blue-500" />
+            </CardHeader>
+            <CardContent className="p-0 divide-y divide-zinc-100 dark:divide-zinc-800">
+              {[
+                { user: "Admin", action: "approved leave", target: "John Doe", time: "Just now" },
+                { user: "Sarah J.", action: "requested asset", target: "MacBook Pro", time: "10m ago" },
+                { user: "System", action: "synced payroll", target: "Q3 Batch", time: "1h ago" },
+                { user: "Mike T.", action: "completed review", target: "Self-Eval", time: "2h ago" },
+                { user: "HR", action: "initiated offboarding", target: "Alex R.", time: "3h ago" },
+              ].map((act, i) => (
+                <div key={i} className="flex items-center justify-between p-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <div className="h-2 w-2 rounded-full bg-blue-500 shrink-0" />
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400 truncate">
+                      <span className="font-bold text-black dark:text-zinc-50">{act.user}</span> {act.action} <span className="font-medium text-black dark:text-zinc-50">{act.target}</span>
+                    </p>
+                  </div>
+                  <span className="text-[9px] font-bold text-zinc-400 shrink-0">{act.time}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Column 3: Velocity */}
+        <Card className={`${isAdmin ? 'lg:col-span-1' : 'lg:col-span-2'} bg-zinc-950 dark:bg-white text-white dark:text-black shadow-2xl overflow-hidden group h-full flex flex-col justify-between`}>
           <CardHeader className="p-4">
             <div className="flex items-center justify-between">
               <div>
