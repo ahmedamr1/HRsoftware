@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, MoreHorizontal, Trash2, ShieldCheck, Mail, Sparkles, TrendingUp, Brain, FileWarning, ArrowRight, Calendar, X, FileText, CheckCircle, ChevronRight, AlertTriangle } from "lucide-react";
+import { Search, Plus, MoreHorizontal, Trash2, ShieldCheck, Mail, Sparkles, TrendingUp, Brain, FileWarning, ArrowRight, Calendar, X, FileText, CheckCircle, ChevronRight, AlertTriangle, BrainCircuit, TrendingDown } from "lucide-react";
 import { useState, useRef, useEffect, Suspense } from "react";
 import * as XLSX from "xlsx";
 import { useEmployees } from "@/lib/employee-context";
+import { calculateRetentionRisk } from "@/lib/retention-risk";
 import Link from "next/link";
 import { toast } from "sonner";
 import {
@@ -201,7 +202,10 @@ function EmployeesContent() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredEmployeeList.map((employee, i) => (
+                                {filteredEmployeeList.map((employee, i) => {
+                                    const risk = calculateRetentionRisk(employee);
+                                    const riskColor = risk.level === 'Low Risk' ? 'bg-emerald-500/10 text-emerald-600' : risk.level === 'Moderate' ? 'bg-amber-500/10 text-amber-600' : 'bg-rose-500/10 text-rose-600';
+                                    return (
                                     <TableRow key={employee.id} className="group hover:bg-blue-50/30 dark:hover:bg-blue-900/10 border-zinc-200 dark:border-zinc-800 transition-colors cursor-pointer" onClick={() => router.push(`/employees/${employee.id}`)}>
                                         <TableCell>
                                             <Avatar className="h-10 w-10 border-2 border-white dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
@@ -223,8 +227,8 @@ function EmployeesContent() {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                <Badge variant="secondary" className={`rounded-full px-2 py-0 border-none shadow-sm text-[9px] font-black uppercase ${i % 3 === 0 ? 'bg-emerald-500/10 text-emerald-600' : i % 3 === 1 ? 'bg-amber-500/10 text-amber-600' : 'bg-rose-500/10 text-rose-600'}`}>
-                                                    {i % 3 === 0 ? 'Low Risk' : i % 3 === 1 ? 'Moderate' : 'High Risk'}
+                                                <Badge variant="secondary" title={risk.primaryReason} className={`rounded-full px-2 py-0 border-none shadow-sm text-[9px] font-black uppercase ${riskColor}`}>
+                                                    {risk.level}
                                                 </Badge>
                                                 <Sparkles size={10} className="text-blue-500/40" />
                                             </div>
@@ -248,6 +252,13 @@ function EmployeesContent() {
                                                         <Mail className="h-4 w-4 text-zinc-400" /> Send Email
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator className="bg-zinc-100 dark:bg-zinc-800" />
+                                                    <DropdownMenuItem className="text-xs focus:bg-zinc-100 dark:focus:bg-zinc-800" onClick={(e) => { e.stopPropagation(); toast.info(`Primary Risk Driver: ${risk.primaryReason}`); }}>
+                                                        <BrainCircuit className="mr-2 h-4 w-4 text-blue-500" /> Analyze Retention Risk
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className="text-xs focus:bg-zinc-100 dark:focus:bg-zinc-800" onClick={(e) => e.stopPropagation()}>
+                                                        <TrendingDown className="mr-2 h-4 w-4 text-zinc-500" /> View Performance Trend
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator className="bg-zinc-100 dark:bg-zinc-800" />
                                                     <DropdownMenuItem className="text-rose-600 dark:text-rose-400 cursor-pointer gap-3 p-3 font-bold text-xs" onClick={() => handleAction("Termination", employee)}>
                                                         <Trash2 className="h-4 w-4" /> Terminate
                                                     </DropdownMenuItem>
@@ -255,7 +266,7 @@ function EmployeesContent() {
                                             </DropdownMenu>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                })}
                             </TableBody>
                         </Table>
                     </div>
