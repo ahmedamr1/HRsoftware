@@ -11,7 +11,7 @@ type RiskLevel = "Low" | "Moderate" | "High";
 const HEATMAP_DATA: Record<string, { risk: RiskLevel, detail: string }[]> = {
     "Engineering": [
         { risk: "Low", detail: "Optimal capacity. 0 Engineers on leave." },
-        { risk: "High", detail: "Critical Scarcity. 4 Senior Engineers on leave (Ahmed, Yusuf, Mahmoud). 60% capacity reduction." },
+        { risk: "High", detail: "Critical Scarcity. 3 Senior Engineers on leave (Ahmed, Yusuf, Mahmoud). 60% capacity reduction." },
         { risk: "Low", detail: "Optimal capacity. 1 Engineer on leave." },
         { risk: "Moderate", detail: "Moderate Scarcity. 2 Engineers on leave." }
     ],
