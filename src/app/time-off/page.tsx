@@ -14,10 +14,16 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { timeOffRequests, TimeOffRequest } from "./data";
 import { useState, useRef } from "react";
 import * as XLSX from "xlsx";
 import { useAuth } from "@/lib/auth-context";
+import { ScarcityMap } from "@/components/scarcity-map";
 
 export default function TimeOffPage() {
     const { userRole } = useAuth();
@@ -78,9 +84,18 @@ export default function TimeOffPage() {
                     <p className="text-zinc-500 dark:text-zinc-400">AI-modeled capacity and leave management.</p>
                 </div>
                 <div className="flex gap-3">
-                    <Button variant="outline" className="border-blue-500/20 text-blue-600 rounded-xl" onClick={() => toast.info("AI modeling team capacity for Q4...")}>
-                        <Activity size={14} className="mr-2" /> Scarcity Map
-                    </Button>
+                    {isAdmin && (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="border-blue-500/20 text-blue-600 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+                                    <Activity size={14} className="mr-2" /> Scarcity Map
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl border-zinc-200 dark:border-zinc-800 p-8 shadow-2xl">
+                                <ScarcityMap />
+                            </DialogContent>
+                        </Dialog>
+                    )}
                     <input 
                         type="file" 
                         ref={fileInputRef} 
