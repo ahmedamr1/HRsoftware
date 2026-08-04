@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Calendar as CalendarIcon, Clock, CheckCircle2, XCircle, MoreVertical, Zap, Activity, Brain, Sparkles } from "lucide-react";
+import { Plus, Calendar as CalendarIcon, Clock, CheckCircle2, XCircle, MoreVertical, Zap, Activity, Brain, Sparkles, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import Link from "next/link";
