@@ -55,12 +55,12 @@ export function ScarcityMap() {
 
     return (
         <div className="flex flex-col gap-6 text-left">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start pr-12">
                 <div>
                     <h3 className="text-xl font-black text-black dark:text-zinc-50 tracking-tighter">Capacity Risk Map</h3>
                     <p className="text-sm text-zinc-500 mt-1">AI-modeled scarcity risk based on scheduled time-off for Q4.</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-1">
                     <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-none rounded-full px-3 py-1 text-xs font-black">Optimal</Badge>
                     <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-none rounded-full px-3 py-1 text-xs font-black">Moderate</Badge>
                     <Badge variant="outline" className="bg-rose-500/10 text-rose-600 border-none rounded-full px-3 py-1 text-xs font-black">Critical Risk</Badge>
