@@ -92,7 +92,15 @@ export default function TimeOffPage() {
                                 <Activity size={14} className="mr-2" /> Scarcity Map
                             </Button>
                             <Dialog open={isScarcityMapOpen} onOpenChange={setIsScarcityMapOpen} className="max-w-5xl max-h-[90vh] overflow-y-auto">
-                                <DialogContent className="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl border-zinc-200 dark:border-zinc-800 p-8 shadow-2xl">
+                                <DialogContent className="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl border-zinc-200 dark:border-zinc-800 p-8 shadow-2xl relative">
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        className="absolute top-6 right-6 h-8 w-8 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-500 transition-colors"
+                                        onClick={() => setIsScarcityMapOpen(false)}
+                                    >
+                                        <X size={16} />
+                                    </Button>
                                     <DialogHeader>
                                         <DialogTitle className="sr-only">Scarcity Map</DialogTitle>
                                     </DialogHeader>
