@@ -265,7 +265,8 @@ function EmployeesContent() {
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </TableCell>
-                                    </TableRow>
+                                        </TableRow>
+                                    );
                                 })}
                             </TableBody>
                         </Table>
