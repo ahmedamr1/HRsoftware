@@ -96,7 +96,7 @@ export function ScarcityMap() {
                                         </div>
 
                                         {hoveredCell?.dept === dept && hoveredCell?.weekIndex === weekIndex && (
-                                            <div className="absolute z-50 bottom-full mb-2 left-1/2 -translate-x-1/2 w-56 bg-zinc-950 dark:bg-white text-white dark:text-black rounded-xl p-3 shadow-2xl pointer-events-none animate-in fade-in zoom-in duration-200">
+                                            <div className={`absolute z-50 ${dept === "Engineering" ? "top-full mt-2" : "bottom-full mb-2"} left-1/2 -translate-x-1/2 w-56 bg-zinc-950 dark:bg-white text-white dark:text-black rounded-xl p-3 shadow-2xl pointer-events-none animate-in fade-in zoom-in duration-200`}>
                                                 <div className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">{dept} - {WEEKS[weekIndex].split(" ")[0]}</div>
                                                 <div className="text-xs font-medium leading-relaxed">
                                                     {cell.detail}
