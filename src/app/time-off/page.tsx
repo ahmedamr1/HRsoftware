@@ -17,7 +17,8 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogTrigger,
+    DialogHeader,
+    DialogTitle
 } from "@/components/ui/dialog";
 import { timeOffRequests, TimeOffRequest } from "./data";
 import { useState, useRef } from "react";
@@ -29,6 +30,7 @@ export default function TimeOffPage() {
     const { userRole } = useAuth();
     const isAdmin = userRole === "admin" || userRole === "manager";
     const [allRequests, setAllRequests] = useState<TimeOffRequest[]>(timeOffRequests);
+    const [isScarcityMapOpen, setIsScarcityMapOpen] = useState(false);
     const requests = isAdmin ? allRequests : allRequests.filter(r => r.user === "Ahmed Amr");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,16 +87,19 @@ export default function TimeOffPage() {
                 </div>
                 <div className="flex gap-3">
                     {isAdmin && (
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" className="border-blue-500/20 text-blue-600 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
-                                    <Activity size={14} className="mr-2" /> Scarcity Map
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-4xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl border-zinc-200 dark:border-zinc-800 p-8 shadow-2xl">
-                                <ScarcityMap />
-                            </DialogContent>
-                        </Dialog>
+                        <>
+                            <Button variant="outline" className="border-blue-500/20 text-blue-600 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" onClick={() => setIsScarcityMapOpen(true)}>
+                                <Activity size={14} className="mr-2" /> Scarcity Map
+                            </Button>
+                            <Dialog open={isScarcityMapOpen} onOpenChange={setIsScarcityMapOpen}>
+                                <DialogContent className="max-w-4xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-3xl border-zinc-200 dark:border-zinc-800 p-8 shadow-2xl">
+                                    <DialogHeader>
+                                        <DialogTitle className="sr-only">Scarcity Map</DialogTitle>
+                                    </DialogHeader>
+                                    <ScarcityMap />
+                                </DialogContent>
+                            </Dialog>
+                        </>
                     )}
                     <input 
                         type="file" 
